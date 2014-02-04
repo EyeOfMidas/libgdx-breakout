@@ -11,6 +11,7 @@ public class BallEntity implements Collideable {
 	private Vector2 velocity;
 	private Vector2 acceleration;
 	private Vector2 drag;
+	private Vector2 speedFactor;
 
 	public BallEntity() {
 		position = new Vector2(0, 0);
@@ -21,23 +22,16 @@ public class BallEntity implements Collideable {
 	}
 
 	public void update(float delta) {
-		velocity.add(acceleration);
+		velocity.x += acceleration.x;
+		velocity.y += acceleration.y;
 		velocity.scl(drag);
 		position.x += velocity.x;
 		position.y += velocity.y;
 
 	}
 
-	public Vector2 getNextPosition(float delta) {
-		Vector2 newPos = new Vector2();
-		newPos.x = position.x + acceleration.x + velocity.x;
-		newPos.y = position.y + acceleration.y + velocity.y;
-		return newPos;
-	}
-
 	public Rectangle getBounds() {
-		return new Rectangle(position.x - size.x / 2, position.y - size.y / 2,
-				size.x, size.y);
+		return new Rectangle(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y);
 	}
 
 	public Color getColor() {
@@ -53,6 +47,7 @@ public class BallEntity implements Collideable {
 	public void setAcceleration(float x, float y) {
 		acceleration.x = x;
 		acceleration.y = y;
+		acceleration.scl(speedFactor);
 	}
 
 	@Override
@@ -99,5 +94,9 @@ public class BallEntity implements Collideable {
 		size.x = sizeValue;
 		size.y = sizeValue;
 		
+	}
+
+	public void setSpeedFactor(Vector2 speedFactor) {
+		this.speedFactor = speedFactor;
 	}
 }

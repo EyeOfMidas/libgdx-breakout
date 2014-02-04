@@ -14,6 +14,7 @@ public class PaddleEntity implements Collideable {
 	private Vector2 velocity;
 	private Vector2 acceleration;
 	private Vector2 drag;
+	private Vector2 speedFactor;
 
 	public PaddleEntity() {
 		position = new Vector2(0, 0);
@@ -22,7 +23,11 @@ public class PaddleEntity implements Collideable {
 		acceleration = new Vector2(0, 0);
 		drag = new Vector2(0.90f, 0.90f);
 	}
-	
+
+	public void setSpeedFactor(Vector2 speedFactor) {
+		this.speedFactor = speedFactor;
+	}
+
 	@Override
 	public float getX() {
 		return position.x;
@@ -82,20 +87,21 @@ public class PaddleEntity implements Collideable {
 
 	public void update(float delta) {
 		acceleration.x = 0;
-		if(Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)){
-			if(acceleration.x > 0) {
+		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
+			if (acceleration.x > 0) {
 				velocity.x = 0;
 			}
-			acceleration.x = -1.5f;
+			acceleration.x = -0.3f;
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)){
-			if(acceleration.x < 0) {
+		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {
+			if (acceleration.x < 0) {
 				velocity.x = 0;
 			}
-			acceleration.x = 1.5f;
+			acceleration.x = 0.3f;
 		}
-		
-		velocity.add(acceleration);
+
+		velocity.x += acceleration.x * speedFactor.x;
+		velocity.y += acceleration.y * speedFactor.y;
 		velocity.scl(drag);
 		position.x += velocity.x;
 		position.y += velocity.y;
@@ -108,6 +114,6 @@ public class PaddleEntity implements Collideable {
 	public void setSize(float x, float y) {
 		size.x = x;
 		size.y = y;
-		
+
 	}
 }

@@ -4,14 +4,11 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.eyeofmidas.breakout.BreakoutGame;
+import com.badlogic.gdx.math.Vector2;
 import com.eyeofmidas.breakout.entities.BallEntity;
 import com.eyeofmidas.breakout.entities.PaddleEntity;
 import com.eyeofmidas.breakout.logics.CollisionEngine;
@@ -20,66 +17,72 @@ import com.eyeofmidas.breakout.renderers.PaddleRenderer;
 
 public class BreakoutScreen implements Screen {
 	private PerspectiveCamera camera;
-	private BreakoutGame game;
 	private BallRenderer ballRenderer;
 	private PaddleRenderer paddleRenderer;
 	private CollisionEngine collisionEngine;
 	private Rectangle screenBounds;
-	
+
 	private ArrayList<BallEntity> balls = new ArrayList<BallEntity>();
 	private ArrayList<PaddleEntity> paddles = new ArrayList<PaddleEntity>();
-	
-	public BreakoutScreen(BreakoutGame game) {
-		this.game = game;
+	private Vector2 speedFactor;
+
+	public BreakoutScreen() {
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
-		screenBounds = new Rectangle(0,0,width, height);
-		float fieldOfView = height/width * 90;
+		screenBounds = new Rectangle(0, 0, width, height);
+		float fieldOfView = height / width * 90;
 		camera = new PerspectiveCamera(fieldOfView, width, height);
-		float cameraDistance = (height / 2) / (float)Math.tan((fieldOfView / 2)* MathUtils.degreesToRadians);
-		camera.position.set(width/2,height/2, cameraDistance);
+		float cameraDistance = (height / 2)
+				/ (float) Math.tan((fieldOfView / 2)
+						* MathUtils.degreesToRadians);
+		camera.position.set(width / 2, height / 2, cameraDistance);
 		camera.near = 0.1f;
 		camera.far = 10000f;
 		camera.lookAt(width / 2, height / 2, 0f);
 		camera.update();
-		
+
+		speedFactor = new Vector2(width / 100, height / 100);
+
 		ballRenderer = new BallRenderer();
 		paddleRenderer = new PaddleRenderer();
 		collisionEngine = new CollisionEngine();
-		
+
 		BallEntity ball = new BallEntity();
+		ball.setSpeedFactor(speedFactor);
 		ball.setSize(width / 35);
-		ball.setVelocity(1f, 11f);
+		ball.setVelocity(5, 20);
 		ball.setAcceleration(0f, -0.1f);
 		balls.add(ball);
 		ball = new BallEntity();
+		ball.setSpeedFactor(speedFactor);
 		ball.setSize(width / 35);
-		ball.setPosition(500f, 400f);
+		ball.setPosition(width / 2, height / 2);
 		ball.setAcceleration(0f, -0.1f);
 		balls.add(ball);
-		
+
 		PaddleInputProcessor paddleInputProcessor = new PaddleInputProcessor();
 		Gdx.input.setInputProcessor(paddleInputProcessor);
-		
+
 		PaddleEntity paddle = new PaddleEntity();
+		paddle.setSpeedFactor(speedFactor);
 		paddle.setPosition(3 * width / 5, 1 * height / 10);
 		paddle.setSize(width / 8, height / 25);
 		paddles.add(paddle);
 		paddleInputProcessor.registerPaddle(paddle);
 	}
-	
+
 	public void update(float delta) {
 		camera.update();
-		for(BallEntity ball : balls) {
+		for (BallEntity ball : balls) {
 			ball.update(delta);
 			collisionEngine.constrain(ball, screenBounds);
-			
+
 		}
 		ballRenderer.updateBalls(balls);
-		for(PaddleEntity paddle : paddles) {
+		for (PaddleEntity paddle : paddles) {
 			paddle.update(delta);
 			collisionEngine.constrain(paddle, screenBounds);
-			
+
 		}
 		paddleRenderer.updatePaddles(paddles);
 	}
@@ -89,11 +92,11 @@ public class BreakoutScreen implements Screen {
 		this.update(delta);
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
-		
+
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glViewport(0, 0, width, height);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-		
+
 		ballRenderer.render(null, camera);
 		paddleRenderer.render(null, camera);
 	}
