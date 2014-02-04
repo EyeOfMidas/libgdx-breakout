@@ -10,16 +10,19 @@ public class BallEntity implements Collideable {
 	private Vector2 size;
 	private Vector2 velocity;
 	private Vector2 acceleration;
+	private Vector2 drag;
 
 	public BallEntity() {
 		position = new Vector2(0, 0);
 		size = new Vector2(20, 20);
 		velocity = new Vector2(0, 0);
 		acceleration = new Vector2(0, 0);
+		drag = new Vector2(1f, 1f);
 	}
 
 	public void update(float delta) {
 		velocity.add(acceleration);
+		velocity.scl(drag);
 		position.x += velocity.x;
 		position.y += velocity.y;
 
