@@ -94,4 +94,10 @@ public class BallEntity implements Collideable {
 	public Vector2 getPosition() {
 		return new Vector2(getX(), getY());
 	}
+
+	public void setSize(float sizeValue) {
+		size.x = sizeValue;
+		size.y = sizeValue;
+		
+	}
 }

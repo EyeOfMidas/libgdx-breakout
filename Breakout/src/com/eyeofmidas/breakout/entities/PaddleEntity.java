@@ -100,4 +100,14 @@ public class PaddleEntity implements Collideable {
 		position.x += velocity.x;
 		position.y += velocity.y;
 	}
+
+	public void setCenterPosition(float x, float y) {
+		position.x = x - size.x / 2;
+	}
+
+	public void setSize(float x, float y) {
+		size.x = x;
+		size.y = y;
+		
+	}
 }

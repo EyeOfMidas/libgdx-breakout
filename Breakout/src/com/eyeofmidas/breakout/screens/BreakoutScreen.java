@@ -43,17 +43,17 @@ public class BreakoutScreen implements Screen {
 		camera.lookAt(width / 2, height / 2, 0f);
 		camera.update();
 		
-		
-		
 		ballRenderer = new BallRenderer();
 		paddleRenderer = new PaddleRenderer();
 		collisionEngine = new CollisionEngine();
 		
 		BallEntity ball = new BallEntity();
+		ball.setSize(width / 35);
 		ball.setVelocity(1f, 11f);
 		ball.setAcceleration(0f, -0.1f);
 		balls.add(ball);
 		ball = new BallEntity();
+		ball.setSize(width / 35);
 		ball.setPosition(500f, 400f);
 		ball.setAcceleration(0f, -0.1f);
 		balls.add(ball);
@@ -63,7 +63,9 @@ public class BreakoutScreen implements Screen {
 		
 		PaddleEntity paddle = new PaddleEntity();
 		paddle.setPosition(3 * width / 5, 1 * height / 10);
+		paddle.setSize(width / 8, height / 25);
 		paddles.add(paddle);
+		paddleInputProcessor.registerPaddle(paddle);
 	}
 	
 	public void update(float delta) {
