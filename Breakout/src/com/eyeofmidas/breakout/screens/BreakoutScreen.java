@@ -26,6 +26,7 @@ public class BreakoutScreen implements Screen {
 	private ArrayList<BallEntity> balls = new ArrayList<BallEntity>();
 	private ArrayList<PaddleEntity> paddles = new ArrayList<PaddleEntity>();
 	private Vector2 speedFactor;
+	private PaddleInputProcessor paddleInputProcessor;
 
 	public BreakoutScreen() {
 		float width = Gdx.graphics.getWidth();
@@ -61,9 +62,8 @@ public class BreakoutScreen implements Screen {
 		ball.setAcceleration(0f, -0.1f);
 		balls.add(ball);
 
-		PaddleInputProcessor paddleInputProcessor = new PaddleInputProcessor();
-		Gdx.input.setInputProcessor(paddleInputProcessor);
-
+		paddleInputProcessor = new PaddleInputProcessor();
+		
 		PaddleEntity paddle = new PaddleEntity();
 		paddle.setSpeedFactor(speedFactor);
 		paddle.setPosition(3 * width / 5, 1 * height / 10);
@@ -110,7 +110,7 @@ public class BreakoutScreen implements Screen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
+		Gdx.input.setInputProcessor(paddleInputProcessor);
 
 	}
 

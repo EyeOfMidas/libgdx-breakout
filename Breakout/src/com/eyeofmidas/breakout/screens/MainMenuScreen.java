@@ -3,87 +3,88 @@ package com.eyeofmidas.breakout.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.eyeofmidas.breakout.BreakoutGame;
-import com.eyeofmidas.utils.AlignedBitmapFont;
-import com.eyeofmidas.utils.AlignedBitmapFont.FontAlign;
 
 public class MainMenuScreen implements Screen {
 
-	private BreakoutGame game;
-	private SpriteBatch batch;
-	private AlignedBitmapFont font;
+	private final BreakoutGame game;
 
-	private OrthographicCamera camera;
+	private Stage mainMenuStage;
+	
+	private Label gameLable;
+	private TextButton playButton;
 
-	public MainMenuScreen(BreakoutGame game) {
+	public MainMenuScreen(final BreakoutGame game) {
 		this.game = game;
-		batch = new SpriteBatch();
-		font = new AlignedBitmapFont();
-		font.setScale(2);
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		camera.update();
+		
+		Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"));
+		
+		mainMenuStage = new Stage();
+		gameLable = new Label("Breakout", skin);
+		playButton = new TextButton("Play", skin);
+		
+		mainMenuStage.addActor(gameLable);
+		mainMenuStage.addActor(playButton);
+		
+		gameLable.setAlignment(Align.center | Align.bottom);
+				
+		playButton.addListener(new InputListener() {
+		    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+		        return true;
+		    }
+
+		    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+		    	dispose();
+		        game.startGame();
+		    }
+		});
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0f, 1);
-        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		camera.update();
-
-		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
-
-		batch.setProjectionMatrix(camera.combined);
-
-		batch.begin();
-		font.draw(batch, "Welcome to Breakout!", width / 2, height / 2 + height / 16, FontAlign.CENTER);
-		font.draw(batch, "Tap anywhere to begin!", width / 2, height / 2, FontAlign.CENTER);
-		batch.end();
-
-		if (Gdx.input.isTouched()) {
-			game.startGame();
-			dispose();
-		}
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		mainMenuStage.act(Gdx.graphics.getDeltaTime());
+		mainMenuStage.draw();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
+		mainMenuStage.setViewport(width, height, true);
+		gameLable.setPosition(width / 2 - gameLable.getWidth() / 2, height / 2 - gameLable.getHeight() / 2 + 50);
+		playButton.setPosition(width / 2 - playButton.getWidth() / 2, height / 2 - playButton.getHeight() / 2);
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-
+		Gdx.input.setInputProcessor(mainMenuStage);
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		batch.dispose();
-		font.dispose();
+		mainMenuStage.dispose();
 
 	}
 
