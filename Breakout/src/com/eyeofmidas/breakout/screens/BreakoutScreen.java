@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,14 +14,14 @@ import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
 import com.eyeofmidas.breakout.actors.BallActor;
 import com.eyeofmidas.breakout.actors.PaddleActor;
-import com.eyeofmidas.breakout.logics.CollisionEngine;
-import com.eyeofmidas.utils.Console;
 
 public class BreakoutScreen implements Screen {
 
 	private Stage breakoutStage;
 	private BallActor ball;
 	private PaddleActor paddle;
+	private World world;
+	private Box2DDebugRenderer debugRenderer;
 
 	public BreakoutScreen(final BreakoutGame game) {
 		breakoutStage = new Stage();
@@ -31,12 +33,12 @@ public class BreakoutScreen implements Screen {
 
 			@Override
 			public void touchDragged(InputEvent event, float x, float y, int pointer) {
-				paddle.setX(x - paddle.getWidth() / 2);
+				paddle.setX(x);
 			}
 
 			@Override
 			public boolean mouseMoved(InputEvent event, float x, float y) {
-				paddle.setX(x - paddle.getWidth() / 2);
+				paddle.setX(x);
 				return true;
 			}
 
@@ -51,12 +53,15 @@ public class BreakoutScreen implements Screen {
 				return false;
 			}
 		});
+		world = new World(new Vector2(0f, 0f), true);
+		debugRenderer = new Box2DDebugRenderer();
 
-		ball = new BallActor();
+		ball = new BallActor(world);
 		breakoutStage.addActor(ball);
 
-		paddle = new PaddleActor();
+		paddle = new PaddleActor(world);
 		breakoutStage.addActor(paddle);
+		
 	}
 
 	@Override
@@ -64,31 +69,11 @@ public class BreakoutScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		breakoutStage.act(Gdx.graphics.getDeltaTime());
-		CollisionEngine collisionEngine = new CollisionEngine();
-		switch(collisionEngine.collidesDirection(ball.getBounds(), paddle.getBounds()))
-		{
-		case BOTTOM:
-			ball.setPosition(ball.getX(), paddle.getY() - ball.getHeight());
-			ball.setVelocity(ball.getVelocity().x, -ball.getVelocity().y);
-			break;
-		case LEFT:
-			ball.setPosition(paddle.getX() - ball.getWidth(), ball.getY());
-			ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);
-			break;
-		case RIGHT:
-			ball.setPosition(paddle.getX() + paddle.getWidth(), ball.getY());
-			ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);
-			break;
-		case TOP:
-			ball.setPosition(ball.getX(), paddle.getY() + ball.getHeight());
-			ball.setVelocity(ball.getVelocity().x, -ball.getVelocity().y);
-			break;
-		case NONE:
-		default:
-			break;
-			
-		}
 		breakoutStage.draw();
+		
+		debugRenderer.render(world, breakoutStage.getCamera().combined);
+				
+		world.step(1/45f, 6, 2);
 	}
 
 	@Override

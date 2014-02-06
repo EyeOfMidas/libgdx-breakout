@@ -4,73 +4,56 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.eyeofmidas.breakout.BreakoutGame;
 
 public class BallActor extends Actor {
 
 	private ShapeRenderer shapeRenderer;
-	private Vector2 acceleration;
-	private Vector2 velocity;
-	private Vector2 nextPosition;
-	private boolean debug = false;
-	private Rectangle bounds;
+	private Fixture fixture;
 
-	public BallActor() {
+	public BallActor(World world) {
 		shapeRenderer = new ShapeRenderer();
-		nextPosition = new Vector2();
-		bounds = new Rectangle();
 
-		acceleration = new Vector2();
-		velocity = new Vector2();
 		setColor(Color.WHITE);
-		setPosition(300, 100);
 		setSize(20, 20);
-		setAcceleration(0, -10f);
-		setVelocity(-300, 800);
+
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.position.set(300, 100);
+		Body body = world.createBody(bodyDef);
+		CircleShape circle = new CircleShape();
+		circle.setRadius(getWidth() / 2);
+
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = circle;
+		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.0f;
+		fixtureDef.restitution = 1.0f;
+
+		fixture = body.createFixture(fixtureDef);
+		body.setLinearVelocity(-50f, -50f);
+
+		circle.dispose();
 	}
 
-	public void setVelocity(float x, float y) {
-		velocity.x = x;
-		velocity.y = y;
+	@Override
+	public float getX() {
+		return fixture.getBody().getPosition().x;
 	}
 
-	private void setAcceleration(float x, float y) {
-		acceleration.x = x;
-		acceleration.y = y;
-	}
-
-	public Vector2 getNextPosition(float delta) {
-		nextPosition.x = getX() + velocity.x * delta;
-		nextPosition.y = getY() + velocity.y * delta;
-		return nextPosition;
-
+	@Override
+	public float getY() {
+		return fixture.getBody().getPosition().y;
 	}
 
 	public void act(float delta) {
-		velocity.add(acceleration);
-		getNextPosition(delta);
-
-		if (nextPosition.x < 0) {
-			nextPosition.x = 0;
-			velocity.x *= -1;
-		}
-		if (nextPosition.x > BreakoutGame.WIDTH - getWidth()) {
-			nextPosition.x = BreakoutGame.WIDTH - getWidth();
-			velocity.x *= -1;
-		}
-		if (nextPosition.y < 0) {
-			nextPosition.y = 0;
-			velocity.y *= -1;
-		}
-		if (nextPosition.y > BreakoutGame.HEIGHT - getHeight()) {
-			nextPosition.y = BreakoutGame.HEIGHT - getHeight();
-			velocity.y *= -1;
-		}
-
-		setPosition(nextPosition.x, nextPosition.y);
 	}
 
 	public void draw(Batch batch, float parentAlpha) {
@@ -82,27 +65,8 @@ public class BallActor extends Actor {
 		shapeRenderer.translate(getX(), getY(), 0);
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.WHITE);
-		shapeRenderer.circle(getWidth() / 2, getHeight() / 2, getWidth() / 2);
+		shapeRenderer.circle(0, 0, getWidth() / 2);
 		shapeRenderer.end();
-		if (debug) {
-			shapeRenderer.begin(ShapeType.Line);
-			shapeRenderer.setColor(Color.GREEN);
-			shapeRenderer.rect(0, 0, getWidth(), getHeight());
-			shapeRenderer.end();
-		}
-
 		batch.begin();
-	}
-
-	public Rectangle getBounds() {
-		bounds.x = getX();
-		bounds.y = getY();
-		bounds.width = getWidth();
-		bounds.height = getHeight();
-		return bounds;
-	}
-
-	public Vector2 getVelocity() {
-		return velocity;
 	}
 }
