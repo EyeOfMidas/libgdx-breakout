@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
 import com.eyeofmidas.breakout.actors.BallActor;
 import com.eyeofmidas.breakout.actors.PaddleActor;
+import com.eyeofmidas.breakout.logics.CollisionEngine;
+import com.eyeofmidas.utils.Console;
 
 public class BreakoutScreen implements Screen {
 
@@ -62,6 +64,10 @@ public class BreakoutScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		breakoutStage.act(Gdx.graphics.getDeltaTime());
+		CollisionEngine collisionEngine = new CollisionEngine();
+		if(collisionEngine.collides(ball.getBounds(), paddle.getBounds())) {
+			ball.setVelocity(ball.getVelocity().x, -ball.getVelocity().y);
+		}
 		breakoutStage.draw();
 	}
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.eyeofmidas.breakout.BreakoutGame;
@@ -14,11 +15,13 @@ public class PaddleActor extends Actor {
 	private Vector2 acceleration;
 	private Vector2 velocity;
 	private Vector2 nextPosition;
+	private Rectangle bounds;
 
 	public PaddleActor() {
 		shapeRenderer = new ShapeRenderer();
 		nextPosition = new Vector2();
-
+		bounds = new Rectangle();
+		
 		acceleration = new Vector2();
 		velocity = new Vector2();
 		setColor(Color.WHITE);
@@ -80,5 +83,13 @@ public class PaddleActor extends Actor {
 		shapeRenderer.end();
 		
 		batch.begin();
+	}
+
+	public Rectangle getBounds() {
+		bounds.x = getX();
+		bounds.y = getY();
+		bounds.width = getWidth();
+		bounds.height = getHeight();
+		return bounds;
 	}
 }
