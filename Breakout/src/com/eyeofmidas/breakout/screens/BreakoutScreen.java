@@ -5,7 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -62,6 +65,35 @@ public class BreakoutScreen implements Screen {
 		paddle = new PaddleActor(world);
 		breakoutStage.addActor(paddle);
 		
+		BodyDef groundBodyDef = new BodyDef();  
+		groundBodyDef.position.set(0,BreakoutGame.HEIGHT);  
+
+		Body groundBody = world.createBody(groundBodyDef);  
+
+		PolygonShape groundBox = new PolygonShape();  
+		groundBox.setAsBox(1.0f,BreakoutGame.HEIGHT);
+		groundBody.createFixture(groundBox, 0.0f); 
+		
+		
+		groundBodyDef = new BodyDef();  
+		groundBodyDef.position.set(BreakoutGame.WIDTH,BreakoutGame.HEIGHT);  
+
+		groundBody = world.createBody(groundBodyDef);  
+
+		groundBox = new PolygonShape();  
+		groundBox.setAsBox(1.0f,BreakoutGame.HEIGHT);
+		groundBody.createFixture(groundBox, 0.0f); 
+		
+		groundBodyDef = new BodyDef();  
+		groundBodyDef.position.set(0,BreakoutGame.HEIGHT);  
+
+		groundBody = world.createBody(groundBodyDef);  
+
+		groundBox = new PolygonShape();  
+		groundBox.setAsBox(BreakoutGame.WIDTH,1.0f);
+		groundBody.createFixture(groundBox, 0.0f); 
+		
+		groundBox.dispose();
 	}
 
 	@Override

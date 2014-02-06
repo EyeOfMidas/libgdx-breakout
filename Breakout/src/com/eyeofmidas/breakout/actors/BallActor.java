@@ -26,7 +26,7 @@ public class BallActor extends Actor {
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(300, 100);
+		bodyDef.position.set(300, 200);
 		Body body = world.createBody(bodyDef);
 		CircleShape circle = new CircleShape();
 		circle.setRadius(getWidth() / 2);
@@ -38,7 +38,7 @@ public class BallActor extends Actor {
 		fixtureDef.restitution = 1.0f;
 
 		fixture = body.createFixture(fixtureDef);
-		body.setLinearVelocity(-50f, -50f);
+		body.setLinearVelocity(-100f, -100f);
 
 		circle.dispose();
 	}
