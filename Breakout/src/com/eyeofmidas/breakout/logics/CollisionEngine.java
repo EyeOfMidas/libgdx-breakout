@@ -4,8 +4,31 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class CollisionEngine {
+	public static enum CollisionType {
+		NONE, TOP, RIGHT, BOTTOM, LEFT
+	};
+
 	public boolean collides(Rectangle obj1, Rectangle obj2) {
 		return obj1.overlaps(obj2);
+	}
+
+	public CollisionType collidesDirection(Rectangle obj1, Rectangle obj2) {
+		if (collides(obj1, obj2)) {
+			if (obj1.getY() > obj2.getY()) {
+				return CollisionType.TOP;
+			}
+			if (obj1.getY() - obj1.getHeight() < obj2.getY() - obj2.getHeight()) {
+				return CollisionType.BOTTOM;
+			}
+			if (obj1.getX() < obj2.getX()) {
+				return CollisionType.LEFT;
+			}
+			if (obj1.getX() + obj1.getWidth() > obj2.getX() + obj2.getWidth()) {
+				return CollisionType.RIGHT;
+			}
+		}
+		return CollisionType.NONE;
+
 	}
 
 	public void constrain(Collideable obj1, Rectangle area) {

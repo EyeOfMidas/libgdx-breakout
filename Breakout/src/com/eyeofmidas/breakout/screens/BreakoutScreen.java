@@ -65,8 +65,28 @@ public class BreakoutScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		breakoutStage.act(Gdx.graphics.getDeltaTime());
 		CollisionEngine collisionEngine = new CollisionEngine();
-		if(collisionEngine.collides(ball.getBounds(), paddle.getBounds())) {
+		switch(collisionEngine.collidesDirection(ball.getBounds(), paddle.getBounds()))
+		{
+		case BOTTOM:
+			ball.setPosition(ball.getX(), paddle.getY() - ball.getHeight());
 			ball.setVelocity(ball.getVelocity().x, -ball.getVelocity().y);
+			break;
+		case LEFT:
+			ball.setPosition(paddle.getX() - ball.getWidth(), ball.getY());
+			ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);
+			break;
+		case RIGHT:
+			ball.setPosition(paddle.getX() + paddle.getWidth(), ball.getY());
+			ball.setVelocity(-ball.getVelocity().x, ball.getVelocity().y);
+			break;
+		case TOP:
+			ball.setPosition(ball.getX(), paddle.getY() + ball.getHeight());
+			ball.setVelocity(ball.getVelocity().x, -ball.getVelocity().y);
+			break;
+		case NONE:
+		default:
+			break;
+			
 		}
 		breakoutStage.draw();
 	}
