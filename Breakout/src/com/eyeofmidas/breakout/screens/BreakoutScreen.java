@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.eyeofmidas.breakout.entities.BallEntity;
 import com.eyeofmidas.breakout.entities.PaddleEntity;
 import com.eyeofmidas.breakout.logics.CollisionEngine;
+import com.eyeofmidas.breakout.logics.PaddleInputProcessor;
 import com.eyeofmidas.breakout.renderers.BallRenderer;
 import com.eyeofmidas.breakout.renderers.PaddleRenderer;
 

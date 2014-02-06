@@ -1,4 +1,4 @@
-package com.eyeofmidas.breakout.screens;
+package com.eyeofmidas.breakout.logics;
 
 import com.badlogic.gdx.InputProcessor;
 import com.eyeofmidas.breakout.entities.PaddleEntity;
