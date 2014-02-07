@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -25,13 +26,20 @@ public class PaddleActor extends Actor {
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set(300, 50);
+		bodyDef.position.set(30, 5);
 		Body body = world.createBody(bodyDef);
-		PolygonShape rectangle = new PolygonShape();
-		rectangle.setAsBox(50, 10);
-		fixture = body.createFixture(rectangle, 0.0f);
+		PolygonShape paddleShape = new PolygonShape();
+		Vector2[] vertexes = new Vector2[6];
+		vertexes[0] = new Vector2(5f, -1f);
+		vertexes[1] = new Vector2(5f, 0.8f);
+		vertexes[2] = new Vector2(3f, 1f);
+		vertexes[3] = new Vector2(-3f, 1f);
+		vertexes[4] = new Vector2(-5f, 0.8f);
+		vertexes[5] = new Vector2(-5f, -1f);
+		paddleShape.set(vertexes);
+		fixture = body.createFixture(paddleShape, 0.0f);
 
-		rectangle.dispose();
+		paddleShape.dispose();
 	}
 
 	@Override
@@ -46,7 +54,7 @@ public class PaddleActor extends Actor {
 
 	@Override
 	public void setX(float x) {
-		fixture.getBody().setTransform(x, getY(), 0);
+		fixture.getBody().setTransform(x / 10, getY(), 0);
 	}
 
 	public void act(float delta) {
@@ -59,7 +67,7 @@ public class PaddleActor extends Actor {
 
 		shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
 		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-		shapeRenderer.translate(getX() - getWidth() / 2, getY() - getHeight() / 2, 0);
+		shapeRenderer.translate(getX() * 10 - getWidth() / 2, getY() * 10 - getHeight() / 2, 0);
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.WHITE);
 		shapeRenderer.rect(0, 0, getWidth(), getHeight());

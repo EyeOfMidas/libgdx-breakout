@@ -26,10 +26,10 @@ public class BallActor extends Actor {
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(300, 200);
+		bodyDef.position.set(30, 20);
 		Body body = world.createBody(bodyDef);
 		CircleShape circle = new CircleShape();
-		circle.setRadius(getWidth() / 2);
+		circle.setRadius(1);
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = circle;
@@ -38,7 +38,7 @@ public class BallActor extends Actor {
 		fixtureDef.restitution = 1.0f;
 
 		fixture = body.createFixture(fixtureDef);
-		body.setLinearVelocity(-100f, -100f);
+		body.setLinearVelocity(-20f, 20f);
 
 		circle.dispose();
 	}
@@ -62,7 +62,7 @@ public class BallActor extends Actor {
 
 		shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
 		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-		shapeRenderer.translate(getX(), getY(), 0);
+		shapeRenderer.translate(getX() * 10, getY() * 10, 0);
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.WHITE);
 		shapeRenderer.circle(0, 0, getWidth() / 2);

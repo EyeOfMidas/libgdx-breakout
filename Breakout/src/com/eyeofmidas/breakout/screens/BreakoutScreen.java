@@ -25,6 +25,7 @@ public class BreakoutScreen implements Screen {
 	private PaddleActor paddle;
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
+	private boolean debug = false;
 
 	public BreakoutScreen(final BreakoutGame game) {
 		breakoutStage = new Stage();
@@ -66,31 +67,31 @@ public class BreakoutScreen implements Screen {
 		breakoutStage.addActor(paddle);
 		
 		BodyDef groundBodyDef = new BodyDef();  
-		groundBodyDef.position.set(0,BreakoutGame.HEIGHT);  
+		groundBodyDef.position.set(-1.0f,60);  
 
 		Body groundBody = world.createBody(groundBodyDef);  
 
 		PolygonShape groundBox = new PolygonShape();  
-		groundBox.setAsBox(1.0f,BreakoutGame.HEIGHT);
+		groundBox.setAsBox(1.0f,60);
 		groundBody.createFixture(groundBox, 0.0f); 
 		
 		
 		groundBodyDef = new BodyDef();  
-		groundBodyDef.position.set(BreakoutGame.WIDTH,BreakoutGame.HEIGHT);  
+		groundBodyDef.position.set(81f,60f);  
 
 		groundBody = world.createBody(groundBodyDef);  
 
 		groundBox = new PolygonShape();  
-		groundBox.setAsBox(1.0f,BreakoutGame.HEIGHT);
+		groundBox.setAsBox(1.0f,60);
 		groundBody.createFixture(groundBox, 0.0f); 
 		
 		groundBodyDef = new BodyDef();  
-		groundBodyDef.position.set(0,BreakoutGame.HEIGHT);  
+		groundBodyDef.position.set(0f,61f);  
 
 		groundBody = world.createBody(groundBodyDef);  
 
 		groundBox = new PolygonShape();  
-		groundBox.setAsBox(BreakoutGame.WIDTH,1.0f);
+		groundBox.setAsBox(80,1.0f);
 		groundBody.createFixture(groundBox, 0.0f); 
 		
 		groundBox.dispose();
@@ -103,8 +104,9 @@ public class BreakoutScreen implements Screen {
 		breakoutStage.act(Gdx.graphics.getDeltaTime());
 		breakoutStage.draw();
 		
-		debugRenderer.render(world, breakoutStage.getCamera().combined);
-				
+		if(debug ) {
+			debugRenderer.render(world, breakoutStage.getCamera().combined.scl(10f, 10f, 1f));
+		}
 		world.step(1/45f, 6, 2);
 	}
 
