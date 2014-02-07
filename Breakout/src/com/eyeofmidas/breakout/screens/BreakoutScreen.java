@@ -12,15 +12,15 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
 import com.eyeofmidas.breakout.actors.BallActor;
 import com.eyeofmidas.breakout.actors.PaddleActor;
+import com.eyeofmidas.breakout.stages.BackgroundStage;
 
 public class BreakoutScreen implements Screen {
 
-	private Stage breakoutStage;
+	private BackgroundStage breakoutStage;
 	private BallActor ball;
 	private PaddleActor paddle;
 	private World world;
@@ -28,7 +28,7 @@ public class BreakoutScreen implements Screen {
 	private boolean debug = false;
 
 	public BreakoutScreen(final BreakoutGame game) {
-		breakoutStage = new Stage();
+		breakoutStage = new BackgroundStage();
 		breakoutStage.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -99,7 +99,7 @@ public class BreakoutScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0f, 1);
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		breakoutStage.act(Gdx.graphics.getDeltaTime());
 		breakoutStage.draw();

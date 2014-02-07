@@ -6,17 +6,17 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
+import com.eyeofmidas.breakout.stages.BackgroundStage;
 
 public class MainMenuScreen implements Screen {
 
-	private Stage mainMenuStage;
+	private BackgroundStage mainMenuStage;
 
 	private Label gameLabel;
 	private TextButton playButton;
@@ -24,7 +24,7 @@ public class MainMenuScreen implements Screen {
 	public MainMenuScreen(final BreakoutGame game) {
 		Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"));
 
-		mainMenuStage = new Stage();
+		mainMenuStage = new BackgroundStage();
 		gameLabel = new Label("Breakout", skin);
 		playButton = new TextButton("Play", skin);
 
@@ -46,7 +46,7 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0f, 1);
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		mainMenuStage.act(Gdx.graphics.getDeltaTime());
 		mainMenuStage.draw();

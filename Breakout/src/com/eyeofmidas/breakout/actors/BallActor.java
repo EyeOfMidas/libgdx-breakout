@@ -54,6 +54,11 @@ public class BallActor extends Actor {
 	}
 
 	public void act(float delta) {
+		if(getY() * 10 + getWidth() < 0) {
+			fixture.getBody().setTransform(30, 20, 0);
+			fixture.getBody().setLinearVelocity(-20f, 20f);
+		}
+		
 	}
 
 	public void draw(Batch batch, float parentAlpha) {
