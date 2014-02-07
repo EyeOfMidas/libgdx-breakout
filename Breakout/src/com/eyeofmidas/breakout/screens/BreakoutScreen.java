@@ -95,6 +95,13 @@ public class BreakoutScreen implements Screen {
 		groundBody.createFixture(groundBox, 0.0f); 
 		
 		groundBox.dispose();
+		
+		this.reset();
+	}
+	
+	public void reset() {
+		ball.reset();
+		paddle.reset();
 	}
 
 	@Override
@@ -125,6 +132,7 @@ public class BreakoutScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(breakoutStage);
 		Gdx.input.setCatchBackKey(true);
+		this.reset();
 	}
 
 	@Override
@@ -147,7 +155,7 @@ public class BreakoutScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		breakoutStage.dispose();
 	}
 
 }

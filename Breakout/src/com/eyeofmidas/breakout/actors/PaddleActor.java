@@ -75,4 +75,8 @@ public class PaddleActor extends Actor {
 
 		batch.begin();
 	}
+
+	public void reset() {
+		fixture.getBody().setTransform(30, 5, 0);
+	}
 }
