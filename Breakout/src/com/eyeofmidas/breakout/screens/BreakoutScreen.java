@@ -6,18 +6,21 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
 import com.eyeofmidas.breakout.actors.BallActor;
+import com.eyeofmidas.breakout.actors.BrickActor;
 import com.eyeofmidas.breakout.actors.PaddleActor;
+import com.eyeofmidas.breakout.collisions.BreakoutContactListener;
+import com.eyeofmidas.breakout.collisions.HasContactListener;
+import com.eyeofmidas.breakout.collisions.Wall;
 import com.eyeofmidas.breakout.stages.BackgroundStage;
-import com.eyeofmidas.utils.Console;
 
 public class BreakoutScreen implements Screen {
 
@@ -28,6 +31,8 @@ public class BreakoutScreen implements Screen {
 	private Box2DDebugRenderer debugRenderer;
 	private boolean debug = false;
 	private boolean[] keys = new boolean[4];
+	private BrickActor brick;
+	private BreakoutContactListener contactListener;
 
 	public BreakoutScreen(final BreakoutGame game) {
 		breakoutStage = new BackgroundStage();
@@ -83,6 +88,8 @@ public class BreakoutScreen implements Screen {
 			}
 		});
 		world = new World(new Vector2(0f, 0f), true);
+		contactListener = new BreakoutContactListener();
+		world.setContactListener(contactListener);
 		debugRenderer = new Box2DDebugRenderer();
 
 		ball = new BallActor(world);
@@ -91,34 +98,24 @@ public class BreakoutScreen implements Screen {
 		paddle = new PaddleActor(world);
 		breakoutStage.addActor(paddle);
 
-		BodyDef groundBodyDef = new BodyDef();
-		groundBodyDef.position.set(-1.0f, 60);
+		brick = new BrickActor(world);
+		brick.setPosition(5, 40);
+		breakoutStage.addActor(brick);
 
-		Body groundBody = world.createBody(groundBodyDef);
+		Wall leftWall = new Wall(world);
+		leftWall.setPosition(-1.0f, 60f);
+		leftWall.setSize(1.0f, 60f);
+		leftWall.create();
 
-		PolygonShape groundBox = new PolygonShape();
-		groundBox.setAsBox(1.0f, 60);
-		groundBody.createFixture(groundBox, 0.0f);
+		Wall rightWall = new Wall(world);
+		rightWall.setPosition(81f, 60f);
+		rightWall.setSize(1.0f, 60f);
+		rightWall.create();
 
-		groundBodyDef = new BodyDef();
-		groundBodyDef.position.set(81f, 60f);
-
-		groundBody = world.createBody(groundBodyDef);
-
-		groundBox = new PolygonShape();
-		groundBox.setAsBox(1.0f, 60);
-		groundBody.createFixture(groundBox, 0.0f);
-
-		groundBodyDef = new BodyDef();
-		groundBodyDef.position.set(0f, 61f);
-
-		groundBody = world.createBody(groundBodyDef);
-
-		groundBox = new PolygonShape();
-		groundBox.setAsBox(80, 1.0f);
-		groundBody.createFixture(groundBox, 0.0f);
-
-		groundBox.dispose();
+		Wall ceiling = new Wall(world);
+		ceiling.setPosition(0f, 61f);
+		ceiling.setSize(80f, 1.0f);
+		ceiling.create();
 
 		this.reset();
 	}
@@ -140,20 +137,39 @@ public class BreakoutScreen implements Screen {
 			debugRenderer.render(world, breakoutStage.getCamera().combined.scl(10f, 10f, 1f));
 		}
 		world.step(1 / 45f, 6, 2);
+		deleteDeadBodies();
+	}
+
+	private void deleteDeadBodies() {
+		Array<Body> bodies = new Array<Body>();
+		world.getBodies(bodies);
+		Body node = bodies.pop();
+		while (bodies.size > 0) {
+			Body oBj = node;
+			node = bodies.pop();
+			if (((HasContactListener) oBj.getUserData()).isDying()) {
+				removeBodySafely(oBj);
+			}
+		}
+	}
+
+	private void removeBodySafely(Body body) {
+		final Array<JointEdge> list = body.getJointList();
+		while (list.size > 0) {
+			world.destroyJoint(list.get(0).joint);
+		}
+		world.destroyBody(body);
 	}
 
 	private void handlePaddleInput() {
-		if(keys[0]) {
-			Console.log("moving left");
+		if (keys[0]) {
 			paddle.moveLeft();
 		} else if (keys[1]) {
-			Console.log("moving right");
 			paddle.moveRight();
 		} else {
 			paddle.stop();
 		}
-		
-		
+
 	}
 
 	@Override

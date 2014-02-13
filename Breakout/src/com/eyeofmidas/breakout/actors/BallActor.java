@@ -12,11 +12,13 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.eyeofmidas.breakout.collisions.HasContactListener;
 
-public class BallActor extends Actor {
+public class BallActor extends Actor implements HasContactListener {
 
 	private ShapeRenderer shapeRenderer;
 	private Fixture fixture;
+	private boolean isDying = false;
 
 	public BallActor(World world) {
 		shapeRenderer = new ShapeRenderer();
@@ -36,9 +38,9 @@ public class BallActor extends Actor {
 		fixtureDef.density = 1.0f;
 		fixtureDef.friction = 0.0f;
 		fixtureDef.restitution = 1.0f;
-
-		fixture = body.createFixture(fixtureDef);
 		body.setLinearVelocity(-20f, 20f);
+		body.setUserData(this);
+		fixture = body.createFixture(fixtureDef);
 
 		circle.dispose();
 	}
@@ -78,5 +80,15 @@ public class BallActor extends Actor {
 		fixture.getBody().setTransform(30, 20, 0);
 		fixture.getBody().setLinearVelocity(-20f, 20f);
 		
+	}
+
+	@Override
+	public void contact(HasContactListener other) {
+		
+	}
+
+	@Override
+	public boolean isDying() {
+		return isDying;
 	}
 }

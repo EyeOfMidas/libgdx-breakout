@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -14,54 +13,27 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.eyeofmidas.breakout.collisions.HasContactListener;
 
-public class PaddleActor extends Actor implements HasContactListener {
-
+public class BrickActor extends Actor implements HasContactListener {
 	private ShapeRenderer shapeRenderer;
 	private Fixture fixture;
-	private float lastVelocity;
+	private boolean isDying = false;
 
-	public PaddleActor(World world) {
+	public BrickActor(World world) {
 		shapeRenderer = new ShapeRenderer();
 
 		setColor(Color.WHITE);
-		setSize(100, 20);
+		setSize(80, 20);
 
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set(30, 5);
+		bodyDef.type = BodyType.StaticBody;
+		bodyDef.position.set(10, 5);
 		Body body = world.createBody(bodyDef);
-		PolygonShape paddleShape = new PolygonShape();
-		Vector2[] vertexes = new Vector2[6];
-		vertexes[0] = new Vector2(5f, -1f);
-		vertexes[1] = new Vector2(5f, 0.8f);
-		vertexes[2] = new Vector2(3f, 1f);
-		vertexes[3] = new Vector2(-3f, 1f);
-		vertexes[4] = new Vector2(-5f, 0.8f);
-		vertexes[5] = new Vector2(-5f, -1f);
-		paddleShape.set(vertexes);
+		PolygonShape brickShape = new PolygonShape();
+		brickShape.setAsBox(4, 1);
 		body.setUserData(this);
-		fixture = body.createFixture(paddleShape, 0.0f);
+		fixture = body.createFixture(brickShape, 0.0f);
 
-		paddleShape.dispose();
-	}
-
-	@Override
-	public float getX() {
-		return fixture.getBody().getPosition().x;
-	}
-
-	@Override
-	public float getY() {
-		return fixture.getBody().getPosition().y;
-	}
-
-	@Override
-	public void setX(float x) {
-		fixture.getBody().setTransform(x / 10, getY(), 0);
-	}
-
-	public void act(float delta) {
-
+		brickShape.dispose();
 	}
 
 	public void draw(Batch batch, float parentAlpha) {
@@ -72,38 +44,27 @@ public class PaddleActor extends Actor implements HasContactListener {
 		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
 		shapeRenderer.translate(getX() * 10 - getWidth() / 2, getY() * 10 - getHeight() / 2, 0);
 		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(Color.WHITE);
+		shapeRenderer.setColor(Color.RED);
 		shapeRenderer.rect(0, 0, getWidth(), getHeight());
 		shapeRenderer.end();
 
 		batch.begin();
 	}
 
-	public void reset() {
-		fixture.getBody().setTransform(30, 5, 0);
-	}
-
-	public void moveLeft() {
-		lastVelocity = -50f;
-		fixture.getBody().setLinearVelocity(lastVelocity, 0);
-	}
-
-	public void moveRight() {
-		lastVelocity = 50f;
-		fixture.getBody().setLinearVelocity(lastVelocity, 0);
-	}
-
-	public void stop() {
-		lastVelocity *= 0.9;
-		fixture.getBody().setLinearVelocity(lastVelocity, 0);
+	@Override
+	public void setPosition(float x, float y) {
+		super.setPosition(x, y);
+		fixture.getBody().setTransform(x, y, 0);
 	}
 
 	@Override
 	public void contact(HasContactListener other) {
+		isDying = true;
+		this.remove();
 	}
 
 	@Override
 	public boolean isDying() {
-		return false;
+		return isDying;
 	}
 }
