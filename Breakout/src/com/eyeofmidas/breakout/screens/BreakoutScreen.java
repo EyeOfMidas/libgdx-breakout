@@ -17,6 +17,7 @@ import com.eyeofmidas.breakout.BreakoutGame;
 import com.eyeofmidas.breakout.actors.BallActor;
 import com.eyeofmidas.breakout.actors.PaddleActor;
 import com.eyeofmidas.breakout.stages.BackgroundStage;
+import com.eyeofmidas.utils.Console;
 
 public class BreakoutScreen implements Screen {
 
@@ -26,6 +27,7 @@ public class BreakoutScreen implements Screen {
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
 	private boolean debug = false;
+	private boolean[] keys = new boolean[4];
 
 	public BreakoutScreen(final BreakoutGame game) {
 		breakoutStage = new BackgroundStage();
@@ -49,9 +51,32 @@ public class BreakoutScreen implements Screen {
 			@Override
 			public boolean keyDown(InputEvent event, int keyCode) {
 				switch (keyCode) {
+				case Input.Keys.A:
+				case Input.Keys.LEFT:
+					keys[0] = true;
+					break;
+				case Input.Keys.D:
+				case Input.Keys.RIGHT:
+					keys[1] = true;
+					break;
 				case Input.Keys.BACK:
 				case Input.Keys.ESCAPE:
 					game.endGame();
+					break;
+				}
+				return false;
+			}
+
+			@Override
+			public boolean keyUp(InputEvent event, int keyCode) {
+				switch (keyCode) {
+				case Input.Keys.A:
+				case Input.Keys.LEFT:
+					keys[0] = false;
+					break;
+				case Input.Keys.D:
+				case Input.Keys.RIGHT:
+					keys[1] = false;
 					break;
 				}
 				return false;
@@ -65,40 +90,39 @@ public class BreakoutScreen implements Screen {
 
 		paddle = new PaddleActor(world);
 		breakoutStage.addActor(paddle);
-		
-		BodyDef groundBodyDef = new BodyDef();  
-		groundBodyDef.position.set(-1.0f,60);  
 
-		Body groundBody = world.createBody(groundBodyDef);  
+		BodyDef groundBodyDef = new BodyDef();
+		groundBodyDef.position.set(-1.0f, 60);
 
-		PolygonShape groundBox = new PolygonShape();  
-		groundBox.setAsBox(1.0f,60);
-		groundBody.createFixture(groundBox, 0.0f); 
-		
-		
-		groundBodyDef = new BodyDef();  
-		groundBodyDef.position.set(81f,60f);  
+		Body groundBody = world.createBody(groundBodyDef);
 
-		groundBody = world.createBody(groundBodyDef);  
+		PolygonShape groundBox = new PolygonShape();
+		groundBox.setAsBox(1.0f, 60);
+		groundBody.createFixture(groundBox, 0.0f);
 
-		groundBox = new PolygonShape();  
-		groundBox.setAsBox(1.0f,60);
-		groundBody.createFixture(groundBox, 0.0f); 
-		
-		groundBodyDef = new BodyDef();  
-		groundBodyDef.position.set(0f,61f);  
+		groundBodyDef = new BodyDef();
+		groundBodyDef.position.set(81f, 60f);
 
-		groundBody = world.createBody(groundBodyDef);  
+		groundBody = world.createBody(groundBodyDef);
 
-		groundBox = new PolygonShape();  
-		groundBox.setAsBox(80,1.0f);
-		groundBody.createFixture(groundBox, 0.0f); 
-		
+		groundBox = new PolygonShape();
+		groundBox.setAsBox(1.0f, 60);
+		groundBody.createFixture(groundBox, 0.0f);
+
+		groundBodyDef = new BodyDef();
+		groundBodyDef.position.set(0f, 61f);
+
+		groundBody = world.createBody(groundBodyDef);
+
+		groundBox = new PolygonShape();
+		groundBox.setAsBox(80, 1.0f);
+		groundBody.createFixture(groundBox, 0.0f);
+
 		groundBox.dispose();
-		
+
 		this.reset();
 	}
-	
+
 	public void reset() {
 		ball.reset();
 		paddle.reset();
@@ -108,13 +132,28 @@ public class BreakoutScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		handlePaddleInput();
 		breakoutStage.act(Gdx.graphics.getDeltaTime());
 		breakoutStage.draw();
-		
-		if(debug ) {
+
+		if (debug) {
 			debugRenderer.render(world, breakoutStage.getCamera().combined.scl(10f, 10f, 1f));
 		}
-		world.step(1/45f, 6, 2);
+		world.step(1 / 45f, 6, 2);
+	}
+
+	private void handlePaddleInput() {
+		if(keys[0]) {
+			Console.log("moving left");
+			paddle.moveLeft();
+		} else if (keys[1]) {
+			Console.log("moving right");
+			paddle.moveRight();
+		} else {
+			paddle.stop();
+		}
+		
+		
 	}
 
 	@Override

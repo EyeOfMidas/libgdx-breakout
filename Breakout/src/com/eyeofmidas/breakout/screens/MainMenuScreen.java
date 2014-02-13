@@ -1,6 +1,7 @@
 package com.eyeofmidas.breakout.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
@@ -21,15 +23,24 @@ public class MainMenuScreen implements Screen {
 	private Label gameLabel;
 	private TextButton playButton;
 
+	private Table table;
+
 	public MainMenuScreen(final BreakoutGame game) {
 		Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"));
 
 		mainMenuStage = new BackgroundStage();
+
 		gameLabel = new Label("Breakout", skin);
 		playButton = new TextButton("Play", skin);
 
-		mainMenuStage.addActor(gameLabel);
-		mainMenuStage.addActor(playButton);
+		table = new Table();
+		table.add(gameLabel);
+		table.row();
+		table.add(playButton);
+		table.setFillParent(true);
+		// table.debug();
+
+		mainMenuStage.addActor(table);
 
 		gameLabel.setAlignment(Align.center | Align.bottom);
 
@@ -42,6 +53,19 @@ public class MainMenuScreen implements Screen {
 				game.startGame();
 			}
 		});
+
+		mainMenuStage.addListener(new InputListener() {
+			@Override
+			public boolean keyDown(InputEvent event, int keyCode) {
+				switch (keyCode) {
+				case Input.Keys.BACK:
+				case Input.Keys.ESCAPE:
+					Gdx.app.exit();
+					break;
+				}
+				return false;
+			}
+		});
 	}
 
 	@Override
@@ -50,6 +74,7 @@ public class MainMenuScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		mainMenuStage.act(Gdx.graphics.getDeltaTime());
 		mainMenuStage.draw();
+		// Table.drawDebug(mainMenuStage);
 	}
 
 	@Override
@@ -61,9 +86,6 @@ public class MainMenuScreen implements Screen {
 		int viewportHeight = (int) size.y;
 		Gdx.gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
 		mainMenuStage.setViewport(BreakoutGame.WIDTH, BreakoutGame.HEIGHT, true, viewportX, viewportY, viewportWidth, viewportHeight);
-
-		gameLabel.setPosition(BreakoutGame.WIDTH / 2 - gameLabel.getWidth() / 2, BreakoutGame.HEIGHT / 2 - gameLabel.getHeight() / 2 + 50);
-		playButton.setPosition(BreakoutGame.WIDTH / 2 - playButton.getWidth() / 2, BreakoutGame.HEIGHT / 2 - playButton.getHeight() / 2);
 	}
 
 	@Override

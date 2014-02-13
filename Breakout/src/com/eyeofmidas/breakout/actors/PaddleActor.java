@@ -17,6 +17,7 @@ public class PaddleActor extends Actor {
 
 	private ShapeRenderer shapeRenderer;
 	private Fixture fixture;
+	private float lastVelocity;
 
 	public PaddleActor(World world) {
 		shapeRenderer = new ShapeRenderer();
@@ -28,6 +29,7 @@ public class PaddleActor extends Actor {
 		bodyDef.type = BodyType.KinematicBody;
 		bodyDef.position.set(30, 5);
 		Body body = world.createBody(bodyDef);
+		body.setLinearDamping(0.1f);
 		PolygonShape paddleShape = new PolygonShape();
 		Vector2[] vertexes = new Vector2[6];
 		vertexes[0] = new Vector2(5f, -1f);
@@ -78,5 +80,20 @@ public class PaddleActor extends Actor {
 
 	public void reset() {
 		fixture.getBody().setTransform(30, 5, 0);
+	}
+
+	public void moveLeft() {
+		lastVelocity = -50f;
+		fixture.getBody().setLinearVelocity(lastVelocity, 0);
+	}
+
+	public void moveRight() {
+		lastVelocity = 50f;
+		fixture.getBody().setLinearVelocity(lastVelocity, 0);
+	}
+
+	public void stop() {
+		lastVelocity *= 0.9;
+		fixture.getBody().setLinearVelocity(lastVelocity, 0);
 	}
 }
