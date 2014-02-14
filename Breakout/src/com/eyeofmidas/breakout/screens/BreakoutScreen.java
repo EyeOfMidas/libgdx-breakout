@@ -32,7 +32,7 @@ public class BreakoutScreen implements Screen {
 	private PaddleActor paddle;
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
-	private boolean debug = false;
+	private boolean debug = true;
 	private boolean[] keys = new boolean[4];
 	private BreakoutContactListener contactListener;
 	private ArrayList<BrickActor> bricks = new ArrayList<BrickActor>();
@@ -108,7 +108,7 @@ public class BreakoutScreen implements Screen {
 		for(int y = 0; y < 3; y++) {
 			for(int x = 0; x < 12; x++) {
 				BrickActor brick = new BrickActor(world);
-				brick.setPosition(4f + (x * 6.5f), 55 - (y * 4));
+				brick.setPosition(4f + (x * 6.5f), 50 - (y * 4));
 				brick.setColor(brickColors[y]);
 				bricks.add(brick);
 				breakoutStage.addActor(brick);
@@ -116,17 +116,17 @@ public class BreakoutScreen implements Screen {
 		}
 
 		Wall leftWall = new Wall(world);
-		leftWall.setPosition(-1.0f, 60f);
-		leftWall.setSize(1.0f, 60f);
+		leftWall.setPosition(-1.0f, 25f);
+		leftWall.setSize(1.0f, 31f);
 		leftWall.create();
 
 		Wall rightWall = new Wall(world);
-		rightWall.setPosition(81f, 60f);
-		rightWall.setSize(1.0f, 60f);
+		rightWall.setPosition(81f, 25f);
+		rightWall.setSize(1.0f, 31f);
 		rightWall.create();
 
 		Wall ceiling = new Wall(world);
-		ceiling.setPosition(0f, 61f);
+		ceiling.setPosition(0f, 56.5f);
 		ceiling.setSize(80f, 1.0f);
 		ceiling.create();
 
