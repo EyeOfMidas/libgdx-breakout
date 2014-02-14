@@ -24,6 +24,7 @@ import com.eyeofmidas.breakout.collisions.BreakoutContactListener;
 import com.eyeofmidas.breakout.collisions.Collideable;
 import com.eyeofmidas.breakout.collisions.Wall;
 import com.eyeofmidas.breakout.stages.BackgroundStage;
+import com.eyeofmidas.ui.Header;
 
 public class BreakoutScreen implements Screen {
 
@@ -32,7 +33,7 @@ public class BreakoutScreen implements Screen {
 	private PaddleActor paddle;
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
-	private boolean debug = true;
+	private boolean debug = false;
 	private boolean[] keys = new boolean[4];
 	private BreakoutContactListener contactListener;
 	private ArrayList<BrickActor> bricks = new ArrayList<BrickActor>();
@@ -108,7 +109,7 @@ public class BreakoutScreen implements Screen {
 		for(int y = 0; y < 3; y++) {
 			for(int x = 0; x < 12; x++) {
 				BrickActor brick = new BrickActor(world);
-				brick.setPosition(4f + (x * 6.5f), 50 - (y * 4));
+				brick.setPosition(4f + (x * 6.5f), 49 - (y * 4));
 				brick.setColor(brickColors[y]);
 				bricks.add(brick);
 				breakoutStage.addActor(brick);
@@ -126,10 +127,13 @@ public class BreakoutScreen implements Screen {
 		rightWall.create();
 
 		Wall ceiling = new Wall(world);
-		ceiling.setPosition(0f, 56.5f);
+		ceiling.setPosition(0f, 56f);
 		ceiling.setSize(80f, 1.0f);
 		ceiling.create();
 
+		
+		Header header = new Header();
+		breakoutStage.addActor(header);
 		this.reset();
 	}
 
