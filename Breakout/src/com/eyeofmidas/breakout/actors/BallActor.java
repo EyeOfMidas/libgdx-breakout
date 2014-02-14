@@ -12,9 +12,9 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.eyeofmidas.breakout.collisions.HasContactListener;
+import com.eyeofmidas.breakout.collisions.Collideable;
 
-public class BallActor extends Actor implements HasContactListener {
+public class BallActor extends Actor implements Collideable {
 
 	private ShapeRenderer shapeRenderer;
 	private Fixture fixture;
@@ -83,7 +83,7 @@ public class BallActor extends Actor implements HasContactListener {
 	}
 
 	@Override
-	public void contact(HasContactListener other) {
+	public void contact(Collideable other) {
 		
 	}
 

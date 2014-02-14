@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Wall implements HasContactListener{
+public class Wall implements Collideable{
 	private BodyDef bodyDef;
 	private Body body;
 	private PolygonShape rectangle;
@@ -33,7 +33,7 @@ public class Wall implements HasContactListener{
 	}
 
 	@Override
-	public void contact(HasContactListener other) {
+	public void contact(Collideable other) {
 		// TODO Auto-generated method stub
 		
 	}

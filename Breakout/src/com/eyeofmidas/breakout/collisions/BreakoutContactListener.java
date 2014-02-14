@@ -10,8 +10,8 @@ public class BreakoutContactListener implements ContactListener {
 	@Override
 	public void beginContact(Contact contact) {
 		// TODO Auto-generated method stub
-		HasContactListener obj1 = (HasContactListener) contact.getFixtureA().getBody().getUserData();
-		HasContactListener obj2 = (HasContactListener) contact.getFixtureB().getBody().getUserData();
+		Collideable obj1 = (Collideable) contact.getFixtureA().getBody().getUserData();
+		Collideable obj2 = (Collideable) contact.getFixtureB().getBody().getUserData();
 		obj1.contact(obj2);
 		obj2.contact(obj1);
 	}

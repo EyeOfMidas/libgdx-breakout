@@ -1,8 +1,11 @@
 package com.eyeofmidas.breakout.screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -18,7 +21,7 @@ import com.eyeofmidas.breakout.actors.BallActor;
 import com.eyeofmidas.breakout.actors.BrickActor;
 import com.eyeofmidas.breakout.actors.PaddleActor;
 import com.eyeofmidas.breakout.collisions.BreakoutContactListener;
-import com.eyeofmidas.breakout.collisions.HasContactListener;
+import com.eyeofmidas.breakout.collisions.Collideable;
 import com.eyeofmidas.breakout.collisions.Wall;
 import com.eyeofmidas.breakout.stages.BackgroundStage;
 
@@ -31,8 +34,8 @@ public class BreakoutScreen implements Screen {
 	private Box2DDebugRenderer debugRenderer;
 	private boolean debug = false;
 	private boolean[] keys = new boolean[4];
-	private BrickActor brick;
 	private BreakoutContactListener contactListener;
+	private ArrayList<BrickActor> bricks = new ArrayList<BrickActor>();
 
 	public BreakoutScreen(final BreakoutGame game) {
 		breakoutStage = new BackgroundStage();
@@ -98,9 +101,19 @@ public class BreakoutScreen implements Screen {
 		paddle = new PaddleActor(world);
 		breakoutStage.addActor(paddle);
 
-		brick = new BrickActor(world);
-		brick.setPosition(5, 40);
-		breakoutStage.addActor(brick);
+		Color[] brickColors = new Color[3];
+		brickColors[0] = new Color(241/255f, 92/255f, 92/255f, 1f);
+		brickColors[1] = new Color(240/255f, 209/255f, 40/255f, 1f);
+		brickColors[2] = new Color(102/255f, 213/255f, 110/255f, 1f);
+		for(int y = 0; y < 3; y++) {
+			for(int x = 0; x < 12; x++) {
+				BrickActor brick = new BrickActor(world);
+				brick.setPosition(4f + (x * 6.5f), 55 - (y * 4));
+				brick.setColor(brickColors[y]);
+				bricks.add(brick);
+				breakoutStage.addActor(brick);
+			}
+		}
 
 		Wall leftWall = new Wall(world);
 		leftWall.setPosition(-1.0f, 60f);
@@ -143,11 +156,11 @@ public class BreakoutScreen implements Screen {
 	private void deleteDeadBodies() {
 		Array<Body> bodies = new Array<Body>();
 		world.getBodies(bodies);
-		Body node = bodies.pop();
+		Body node = null;
 		while (bodies.size > 0) {
-			Body oBj = node;
 			node = bodies.pop();
-			if (((HasContactListener) oBj.getUserData()).isDying()) {
+			Body oBj = node;
+			if (((Collideable) oBj.getUserData()).isDying()) {
 				removeBodySafely(oBj);
 			}
 		}

@@ -11,9 +11,9 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.eyeofmidas.breakout.collisions.HasContactListener;
+import com.eyeofmidas.breakout.collisions.Collideable;
 
-public class BrickActor extends Actor implements HasContactListener {
+public class BrickActor extends Actor implements Collideable {
 	private ShapeRenderer shapeRenderer;
 	private Fixture fixture;
 	private boolean isDying = false;
@@ -22,14 +22,14 @@ public class BrickActor extends Actor implements HasContactListener {
 		shapeRenderer = new ShapeRenderer();
 
 		setColor(Color.WHITE);
-		setSize(80, 20);
+		setSize(50, 20);
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
 		bodyDef.position.set(10, 5);
 		Body body = world.createBody(bodyDef);
 		PolygonShape brickShape = new PolygonShape();
-		brickShape.setAsBox(4, 1);
+		brickShape.setAsBox(2.5f, 1f);
 		body.setUserData(this);
 		fixture = body.createFixture(brickShape, 0.0f);
 
@@ -44,7 +44,7 @@ public class BrickActor extends Actor implements HasContactListener {
 		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
 		shapeRenderer.translate(getX() * 10 - getWidth() / 2, getY() * 10 - getHeight() / 2, 0);
 		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(Color.RED);
+		shapeRenderer.setColor(getColor());
 		shapeRenderer.rect(0, 0, getWidth(), getHeight());
 		shapeRenderer.end();
 
@@ -58,7 +58,7 @@ public class BrickActor extends Actor implements HasContactListener {
 	}
 
 	@Override
-	public void contact(HasContactListener other) {
+	public void contact(Collideable other) {
 		isDying = true;
 		this.remove();
 	}
