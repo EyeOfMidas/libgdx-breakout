@@ -30,8 +30,10 @@ public class MainMenuScreen implements Screen {
 
 	private Table table;
 
+	private BreakoutGame game;
 
 	public MainMenuScreen(final BreakoutGame game) {
+		this.game = game;
 		Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"));
 
 		mainMenuStage = new BackgroundStage();
@@ -41,14 +43,14 @@ public class MainMenuScreen implements Screen {
 
 		gameLabel = new Label("Breakout Level 1", skin);
 		gameLabel.setStyle(new LabelStyle(font, new Color(1, 1, 1, 1)));
-		
+
 		Label placeholderLabel = new Label("[game icon here]", skin);
 		placeholderLabel.setStyle(new LabelStyle(font, new Color(1, 1, 1, 1)));
 		playButton = new DrawnTextButton("START GAME");
 		playButton.setSize(250, 60);
 		howToPlayButton = new DrawnTextButton("HOW TO PLAY");
 		howToPlayButton.setSize(250, 60);
-		
+
 		table = new Table();
 		table.add(gameLabel).colspan(2);
 		table.row();
@@ -57,7 +59,7 @@ public class MainMenuScreen implements Screen {
 		table.add(howToPlayButton).spaceRight(40);
 		table.add(playButton).spaceLeft(40);
 		table.setFillParent(true);
-//		table.debug();
+		// table.debug();
 
 		mainMenuStage.addActor(table);
 
@@ -85,8 +87,6 @@ public class MainMenuScreen implements Screen {
 				return false;
 			}
 		});
-		
-		mainMenuStage.addActor(game.header);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class MainMenuScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		mainMenuStage.act(Gdx.graphics.getDeltaTime());
 		mainMenuStage.draw();
-//		Table.drawDebug(mainMenuStage);
+		// Table.drawDebug(mainMenuStage);
 	}
 
 	@Override
@@ -113,6 +113,7 @@ public class MainMenuScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(mainMenuStage);
 		Gdx.input.setCatchBackKey(false);
+		mainMenuStage.addActor(game.header);
 	}
 
 	@Override

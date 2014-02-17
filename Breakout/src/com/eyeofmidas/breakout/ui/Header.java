@@ -12,11 +12,11 @@ public class Header extends Actor {
 	public Header() {
 		this.setPosition(0, 550);
 		this.setSize(800, 50);
-		this.setColor(new Color(67/255f, 182/255f, 207/255f, 1f));
-		
+		this.setColor(new Color(67 / 255f, 182 / 255f, 207 / 255f, 1f));
+
 		shapeRenderer = new ShapeRenderer();
 	}
-	
+
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		batch.end();

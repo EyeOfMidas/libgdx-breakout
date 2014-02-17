@@ -36,8 +36,10 @@ public class BreakoutScreen implements Screen {
 	private boolean[] keys = new boolean[4];
 	private BreakoutContactListener contactListener;
 	private ArrayList<BrickActor> bricks = new ArrayList<BrickActor>();
+	private BreakoutGame game;
 
 	public BreakoutScreen(final BreakoutGame game) {
+		this.game = game;
 		breakoutStage = new BackgroundStage();
 		breakoutStage.addListener(new InputListener() {
 			@Override
@@ -130,7 +132,6 @@ public class BreakoutScreen implements Screen {
 		ceiling.setSize(80f, 1.0f);
 		ceiling.create();
 
-		breakoutStage.addActor(game.header);
 		this.reset();
 	}
 
@@ -202,6 +203,7 @@ public class BreakoutScreen implements Screen {
 		Gdx.input.setInputProcessor(breakoutStage);
 		Gdx.input.setCatchBackKey(true);
 		this.reset();
+		breakoutStage.addActor(game.header);
 	}
 
 	@Override
