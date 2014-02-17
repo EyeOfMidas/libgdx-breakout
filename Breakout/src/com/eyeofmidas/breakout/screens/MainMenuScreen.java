@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
 import com.eyeofmidas.breakout.stages.BackgroundStage;
+import com.eyeofmidas.breakout.ui.DrawnTextButton;
 
 public class MainMenuScreen implements Screen {
 
@@ -66,6 +67,9 @@ public class MainMenuScreen implements Screen {
 				return false;
 			}
 		});
+
+		DrawnTextButton button = new DrawnTextButton();
+		mainMenuStage.addActor(button);
 	}
 
 	@Override
