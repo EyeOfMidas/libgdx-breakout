@@ -24,7 +24,6 @@ import com.eyeofmidas.breakout.collisions.BreakoutContactListener;
 import com.eyeofmidas.breakout.collisions.Collideable;
 import com.eyeofmidas.breakout.collisions.Wall;
 import com.eyeofmidas.breakout.stages.BackgroundStage;
-import com.eyeofmidas.breakout.ui.Header;
 
 public class BreakoutScreen implements Screen {
 
@@ -131,8 +130,7 @@ public class BreakoutScreen implements Screen {
 		ceiling.setSize(80f, 1.0f);
 		ceiling.create();
 
-		Header header = new Header();
-		breakoutStage.addActor(header);
+		breakoutStage.addActor(game.header);
 		this.reset();
 	}
 

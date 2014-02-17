@@ -42,7 +42,6 @@ public class MainMenuScreen implements Screen {
 		gameLabel = new Label("Breakout Level 1", skin);
 		gameLabel.setStyle(new LabelStyle(font, new Color(1, 1, 1, 1)));
 		
-		
 		Label placeholderLabel = new Label("[game icon here]", skin);
 		placeholderLabel.setStyle(new LabelStyle(font, new Color(1, 1, 1, 1)));
 		playButton = new DrawnTextButton("START GAME");
@@ -86,6 +85,8 @@ public class MainMenuScreen implements Screen {
 				return false;
 			}
 		});
+		
+		mainMenuStage.addActor(game.header);
 	}
 
 	@Override
