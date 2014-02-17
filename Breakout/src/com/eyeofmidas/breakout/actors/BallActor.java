@@ -28,7 +28,7 @@ public class BallActor extends Actor implements Collideable {
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(30, 20);
+		bodyDef.position.set(10, 20);
 		Body body = world.createBody(bodyDef);
 		CircleShape circle = new CircleShape();
 		circle.setRadius(1);
@@ -38,7 +38,7 @@ public class BallActor extends Actor implements Collideable {
 		fixtureDef.density = 1.0f;
 		fixtureDef.friction = 0.0f;
 		fixtureDef.restitution = 1.0f;
-		body.setLinearVelocity(-20f, 20f);
+		body.setLinearVelocity(20f, 20f);
 		body.setUserData(this);
 		fixture = body.createFixture(fixtureDef);
 
@@ -77,8 +77,8 @@ public class BallActor extends Actor implements Collideable {
 	}
 
 	public void reset() {
-		fixture.getBody().setTransform(30, 20, 0);
-		fixture.getBody().setLinearVelocity(-20f, 20f);
+		fixture.getBody().setTransform(10, 20, 0);
+		fixture.getBody().setLinearVelocity(20f, 20f);
 		
 	}
 
