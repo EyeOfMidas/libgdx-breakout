@@ -3,14 +3,17 @@ package com.eyeofmidas.breakout.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
@@ -22,24 +25,40 @@ public class MainMenuScreen implements Screen {
 	private BackgroundStage mainMenuStage;
 
 	private Label gameLabel;
-	private TextButton playButton;
+	private DrawnTextButton playButton;
+	private DrawnTextButton howToPlayButton;
 
 	private Table table;
+
 
 	public MainMenuScreen(final BreakoutGame game) {
 		Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"));
 
 		mainMenuStage = new BackgroundStage();
 
-		gameLabel = new Label("Breakout", skin);
-		playButton = new TextButton("Play", skin);
+		FileHandle fontFile = Gdx.files.internal("data/fonts/proxima-30-extrabold-white.fnt");
+		BitmapFont font = new BitmapFont(fontFile, false);
 
+		gameLabel = new Label("Breakout Level 1", skin);
+		gameLabel.setStyle(new LabelStyle(font, new Color(1, 1, 1, 1)));
+		
+		
+		Label placeholderLabel = new Label("[game icon here]", skin);
+		placeholderLabel.setStyle(new LabelStyle(font, new Color(1, 1, 1, 1)));
+		playButton = new DrawnTextButton("START GAME");
+		playButton.setSize(250, 60);
+		howToPlayButton = new DrawnTextButton("HOW TO PLAY");
+		howToPlayButton.setSize(250, 60);
+		
 		table = new Table();
-		table.add(gameLabel);
+		table.add(gameLabel).colspan(2);
 		table.row();
-		table.add(playButton);
+		table.add(placeholderLabel).height(200).colspan(2).pad(30);
+		table.row();
+		table.add(howToPlayButton).spaceRight(40);
+		table.add(playButton).spaceLeft(40);
 		table.setFillParent(true);
-		// table.debug();
+//		table.debug();
 
 		mainMenuStage.addActor(table);
 
@@ -67,9 +86,6 @@ public class MainMenuScreen implements Screen {
 				return false;
 			}
 		});
-
-		DrawnTextButton button = new DrawnTextButton();
-		mainMenuStage.addActor(button);
 	}
 
 	@Override
@@ -78,7 +94,7 @@ public class MainMenuScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		mainMenuStage.act(Gdx.graphics.getDeltaTime());
 		mainMenuStage.draw();
-		// Table.drawDebug(mainMenuStage);
+//		Table.drawDebug(mainMenuStage);
 	}
 
 	@Override
