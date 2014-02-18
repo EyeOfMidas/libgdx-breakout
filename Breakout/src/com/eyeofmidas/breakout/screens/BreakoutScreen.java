@@ -1,6 +1,7 @@
 package com.eyeofmidas.breakout.screens;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -25,6 +26,7 @@ import com.eyeofmidas.breakout.collisions.BreakoutContactListener;
 import com.eyeofmidas.breakout.collisions.Collideable;
 import com.eyeofmidas.breakout.collisions.Wall;
 import com.eyeofmidas.breakout.stages.BackgroundStage;
+import com.eyeofmidas.utils.Console;
 
 public class BreakoutScreen implements Screen {
 
@@ -40,16 +42,14 @@ public class BreakoutScreen implements Screen {
 	private BreakoutGame game;
 	private Sound ballDieSound;
 	private int lives;
+	private Sound correctSound;
 
-	/*
-	 * wallHitSound: new ig.Sound(pmGameData.assetPath + "common/step.*"),
-	ballDieSound: new ig.Sound(pmGameData.assetPath + "common/incorrect.*"),
-	 */
 	public BreakoutScreen(final BreakoutGame game) {
 		this.game = game;
-		
+
 		ballDieSound = Gdx.audio.newSound(Gdx.files.internal("data/incorrect.ogg"));
-		
+		correctSound = Gdx.audio.newSound(Gdx.files.internal("data/correct.ogg"));
+
 		breakoutStage = new BackgroundStage();
 		breakoutStage.addListener(new InputListener() {
 			@Override
@@ -163,17 +163,29 @@ public class BreakoutScreen implements Screen {
 			debugRenderer.render(world, breakoutStage.getCamera().combined.scl(10f, 10f, 1f));
 		}
 		world.step(1 / 45f, 6, 2);
-		
-		if(ball.isDying()) {
+
+		if (ball.isDying()) {
 			ballDieSound.play();
 			lives--;
-			if(lives <= 0) {
+			if (lives <= 0) {
 				game.endGame();
 			} else {
 				ball.reset();
 			}
 		}
 		deleteDeadBodies();
+		Iterator<BrickActor> iterator = bricks.iterator();
+		while (iterator.hasNext()) {
+			BrickActor brick = iterator.next();
+			if (brick.isDying()) {
+				iterator.remove();
+			}
+		}
+
+		if (bricks.size() <= 0) {
+			correctSound.play();
+			game.endGame();
+		}
 	}
 
 	private void deleteDeadBodies() {

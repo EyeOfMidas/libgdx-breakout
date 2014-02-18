@@ -21,7 +21,6 @@ import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
 import com.eyeofmidas.breakout.stages.BackgroundStage;
 import com.eyeofmidas.breakout.ui.DrawnTextButton;
-import com.eyeofmidas.utils.Console;
 
 public class MainMenuScreen implements Screen {
 
