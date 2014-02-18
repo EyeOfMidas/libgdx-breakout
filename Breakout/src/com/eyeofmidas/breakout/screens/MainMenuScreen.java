@@ -7,9 +7,13 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -38,6 +42,9 @@ public class MainMenuScreen implements Screen {
 
 		mainMenuStage = new BackgroundStage();
 
+		TextureAtlas iconAtlas = new TextureAtlas(Gdx.files.internal("data/category-icons.atlas"));
+		Image icon = new Image(iconAtlas.createSprite("icons-focus-active"));
+		
 		FileHandle fontFile = Gdx.files.internal("data/fonts/proxima-30-extrabold-white.fnt");
 		BitmapFont font = new BitmapFont(fontFile, false);
 
@@ -54,7 +61,7 @@ public class MainMenuScreen implements Screen {
 		table = new Table();
 		table.add(gameLabel).colspan(2);
 		table.row();
-		table.add(placeholderLabel).height(200).colspan(2).pad(30);
+		table.add(icon).colspan(2).pad(80);
 		table.row();
 		table.add(howToPlayButton).spaceRight(40);
 		table.add(playButton).spaceLeft(40);
