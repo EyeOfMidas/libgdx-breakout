@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.eyeofmidas.breakout.collisions.Collideable;
+import com.eyeofmidas.breakout.collisions.Wall;
 
 public class BallActor extends Actor implements Collideable {
 
@@ -22,10 +23,14 @@ public class BallActor extends Actor implements Collideable {
 	private Fixture fixture;
 	private boolean isDying = false;
 	private Sound wallHitSound;
+	private Sound paddleHitSound;
+	private Sound brickHitSound;
 
 	public BallActor(World world) {
 		shapeRenderer = new ShapeRenderer();
 		wallHitSound = Gdx.audio.newSound(Gdx.files.internal("data/step.ogg"));
+		paddleHitSound = Gdx.audio.newSound(Gdx.files.internal("data/click.ogg"));
+		brickHitSound = Gdx.audio.newSound(Gdx.files.internal("data/shake.ogg"));
 		
 		setColor(Color.WHITE);
 		setSize(20, 20);
@@ -88,7 +93,13 @@ public class BallActor extends Actor implements Collideable {
 
 	@Override
 	public void contact(Collideable other) {
-		wallHitSound.play();
+		if(other.getClass().equals(Wall.class)) {
+			wallHitSound.play();
+		}else if(other.getClass().equals(PaddleActor.class)) {
+			paddleHitSound.play();
+		} else if(other.getClass().equals(BrickActor.class)) {
+			brickHitSound.play();
+		}
 	}
 
 	@Override
