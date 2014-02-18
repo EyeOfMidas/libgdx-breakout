@@ -1,6 +1,7 @@
 package com.eyeofmidas.breakout.actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -20,10 +21,12 @@ public class BallActor extends Actor implements Collideable {
 	private ShapeRenderer shapeRenderer;
 	private Fixture fixture;
 	private boolean isDying = false;
+	private Sound wallHitSound;
 
 	public BallActor(World world) {
 		shapeRenderer = new ShapeRenderer();
-
+		wallHitSound = Gdx.audio.newSound(Gdx.files.internal("data/step.ogg"));
+		
 		setColor(Color.WHITE);
 		setSize(20, 20);
 
@@ -85,7 +88,7 @@ public class BallActor extends Actor implements Collideable {
 
 	@Override
 	public void contact(Collideable other) {
-		
+		wallHitSound.play();
 	}
 
 	@Override

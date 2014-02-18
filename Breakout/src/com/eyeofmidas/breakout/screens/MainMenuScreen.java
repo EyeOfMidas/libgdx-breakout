@@ -3,26 +3,25 @@ package com.eyeofmidas.breakout.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
 import com.eyeofmidas.breakout.stages.BackgroundStage;
 import com.eyeofmidas.breakout.ui.DrawnTextButton;
+import com.eyeofmidas.utils.Console;
 
 public class MainMenuScreen implements Screen {
 
@@ -31,33 +30,29 @@ public class MainMenuScreen implements Screen {
 	private Label gameLabel;
 	private DrawnTextButton playButton;
 	private DrawnTextButton howToPlayButton;
-
 	private Table table;
-
 	private BreakoutGame game;
+	private Sound clickSound;
 
 	public MainMenuScreen(final BreakoutGame game) {
 		this.game = game;
-		Skin skin = new Skin(Gdx.files.internal("data/ui/uiskin.json"));
 
-		mainMenuStage = new BackgroundStage();
+		clickSound = Gdx.audio.newSound(Gdx.files.internal("data/button-click.ogg"));
 
 		TextureAtlas iconAtlas = new TextureAtlas(Gdx.files.internal("data/category-icons.atlas"));
 		Image icon = new Image(iconAtlas.createSprite("icons-focus-active"));
-		
+
 		FileHandle fontFile = Gdx.files.internal("data/fonts/proxima-30-extrabold-white.fnt");
 		BitmapFont font = new BitmapFont(fontFile, false);
 
-		gameLabel = new Label("Breakout Level 1", skin);
-		gameLabel.setStyle(new LabelStyle(font, new Color(1, 1, 1, 1)));
+		gameLabel = new Label("Breakout Level 1", new LabelStyle(font, new Color(1, 1, 1, 1)));
 
-		Label placeholderLabel = new Label("[game icon here]", skin);
-		placeholderLabel.setStyle(new LabelStyle(font, new Color(1, 1, 1, 1)));
 		playButton = new DrawnTextButton("START GAME");
 		playButton.setSize(250, 60);
 		howToPlayButton = new DrawnTextButton("HOW TO PLAY");
 		howToPlayButton.setSize(250, 60);
 
+		mainMenuStage = new BackgroundStage();
 		table = new Table();
 		table.add(gameLabel).colspan(2);
 		table.row();
@@ -78,7 +73,18 @@ public class MainMenuScreen implements Screen {
 			}
 
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				clickSound.play();
 				game.startGame();
+			}
+		});
+
+		howToPlayButton.addListener(new InputListener() {
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				return true;
+			}
+
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				clickSound.play();
 			}
 		});
 
@@ -141,6 +147,7 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void dispose() {
 		mainMenuStage.dispose();
+		clickSound.dispose();
 
 	}
 

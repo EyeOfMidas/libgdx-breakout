@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
@@ -37,10 +38,18 @@ public class BreakoutScreen implements Screen {
 	private BreakoutContactListener contactListener;
 	private ArrayList<BrickActor> bricks = new ArrayList<BrickActor>();
 	private BreakoutGame game;
+	private Sound ballDieSound;
 	private int lives;
 
+	/*
+	 * wallHitSound: new ig.Sound(pmGameData.assetPath + "common/step.*"),
+	ballDieSound: new ig.Sound(pmGameData.assetPath + "common/incorrect.*"),
+	 */
 	public BreakoutScreen(final BreakoutGame game) {
 		this.game = game;
+		
+		ballDieSound = Gdx.audio.newSound(Gdx.files.internal("data/incorrect.ogg"));
+		
 		breakoutStage = new BackgroundStage();
 		breakoutStage.addListener(new InputListener() {
 			@Override
@@ -156,6 +165,7 @@ public class BreakoutScreen implements Screen {
 		world.step(1 / 45f, 6, 2);
 		
 		if(ball.isDying()) {
+			ballDieSound.play();
 			lives--;
 			if(lives <= 0) {
 				game.endGame();
