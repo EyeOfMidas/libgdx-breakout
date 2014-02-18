@@ -28,7 +28,7 @@ public class PaddleActor extends Actor implements Collideable {
 
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set(30, 5);
+		bodyDef.position.set(30, 8);
 		Body body = world.createBody(bodyDef);
 		PolygonShape paddleShape = new PolygonShape();
 		Vector2[] vertexes = new Vector2[6];
@@ -80,7 +80,7 @@ public class PaddleActor extends Actor implements Collideable {
 	}
 
 	public void reset() {
-		fixture.getBody().setTransform(30, 5, 0);
+		fixture.getBody().setTransform(30, 8, 0);
 	}
 
 	public void moveLeft() {

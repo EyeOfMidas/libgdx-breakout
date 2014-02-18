@@ -37,6 +37,7 @@ public class BreakoutScreen implements Screen {
 	private BreakoutContactListener contactListener;
 	private ArrayList<BrickActor> bricks = new ArrayList<BrickActor>();
 	private BreakoutGame game;
+	private int lives;
 
 	public BreakoutScreen(final BreakoutGame game) {
 		this.game = game;
@@ -71,7 +72,7 @@ public class BreakoutScreen implements Screen {
 					break;
 				case Input.Keys.BACK:
 				case Input.Keys.ESCAPE:
-					game.endGame();
+					game.pauseGame();
 					break;
 				}
 				return false;
@@ -138,6 +139,7 @@ public class BreakoutScreen implements Screen {
 	public void reset() {
 		ball.reset();
 		paddle.reset();
+		lives = 3;
 	}
 
 	@Override
@@ -152,6 +154,15 @@ public class BreakoutScreen implements Screen {
 			debugRenderer.render(world, breakoutStage.getCamera().combined.scl(10f, 10f, 1f));
 		}
 		world.step(1 / 45f, 6, 2);
+		
+		if(ball.isDying()) {
+			lives--;
+			if(lives <= 0) {
+				game.endGame();
+			} else {
+				ball.reset();
+			}
+		}
 		deleteDeadBodies();
 	}
 

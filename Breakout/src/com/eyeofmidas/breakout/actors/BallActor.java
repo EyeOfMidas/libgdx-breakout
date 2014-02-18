@@ -1,5 +1,6 @@
 package com.eyeofmidas.breakout.actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -56,8 +57,8 @@ public class BallActor extends Actor implements Collideable {
 	}
 
 	public void act(float delta) {
-		if(getY() * 10 + getWidth() < 0) {
-			reset();
+		if(getY() * 10 + getHeight() < 0) {
+			isDying = true;
 		}
 		
 	}
@@ -77,9 +78,9 @@ public class BallActor extends Actor implements Collideable {
 	}
 
 	public void reset() {
+		isDying = false;
 		fixture.getBody().setTransform(10, 20, 0);
 		fixture.getBody().setLinearVelocity(20f, 20f);
-		
 	}
 
 	@Override
