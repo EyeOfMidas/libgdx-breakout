@@ -1,7 +1,5 @@
 package com.eyeofmidas.breakout.actors;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -15,22 +13,16 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.eyeofmidas.breakout.collisions.Collideable;
-import com.eyeofmidas.breakout.collisions.Wall;
 
 public class BallActor extends Actor implements Collideable {
 
 	private ShapeRenderer shapeRenderer;
 	private Fixture fixture;
 	private boolean isDying = false;
-	private Sound wallHitSound;
-	private Sound paddleHitSound;
-	private Sound brickHitSound;
 
 	public BallActor(World world) {
 		shapeRenderer = new ShapeRenderer();
-		wallHitSound = Gdx.audio.newSound(Gdx.files.internal("data/step.ogg"));
-		paddleHitSound = Gdx.audio.newSound(Gdx.files.internal("data/click.ogg"));
-		brickHitSound = Gdx.audio.newSound(Gdx.files.internal("data/shake.ogg"));
+		
 		
 		setColor(Color.WHITE);
 		setSize(20, 20);
@@ -93,17 +85,16 @@ public class BallActor extends Actor implements Collideable {
 
 	@Override
 	public void contact(Collideable other) {
-		if(other.getClass().equals(Wall.class)) {
-			wallHitSound.play();
-		}else if(other.getClass().equals(PaddleActor.class)) {
-			paddleHitSound.play();
-		} else if(other.getClass().equals(BrickActor.class)) {
-			brickHitSound.play();
-		}
+		other.playHitSound();
 	}
 
 	@Override
 	public boolean isDying() {
 		return isDying;
+	}
+
+	@Override
+	public void playHitSound() {
+		
 	}
 }

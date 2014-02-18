@@ -1,5 +1,7 @@
 package com.eyeofmidas.breakout.actors;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,10 +21,11 @@ public class PaddleActor extends Actor implements Collideable {
 	private ShapeRenderer shapeRenderer;
 	private Fixture fixture;
 	private float lastVelocity;
+	private Sound hitSound;
 
 	public PaddleActor(World world) {
 		shapeRenderer = new ShapeRenderer();
-
+		hitSound = Gdx.audio.newSound(Gdx.files.internal("data/click.ogg"));
 		setColor(Color.WHITE);
 		setSize(100, 20);
 
@@ -105,5 +108,11 @@ public class PaddleActor extends Actor implements Collideable {
 	@Override
 	public boolean isDying() {
 		return false;
+	}
+
+	@Override
+	public void playHitSound() {
+		hitSound.play();
+
 	}
 }
