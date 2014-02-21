@@ -1,5 +1,5 @@
 info face="Open Sans Extrabold" size=60 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=0,0
-common lineHeight=83 base=65 scaleW=512 scaleH=512 pages=2 packed=0
+common lineHeight=83 base=83 scaleW=512 scaleH=512 pages=2 packed=0
 page id=0 file="opensans-60-gray1.png"
 page id=1 file="opensans-60-gray2.png"
 chars count=95

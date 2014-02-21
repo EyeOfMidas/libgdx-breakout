@@ -56,16 +56,16 @@ public class GameOverScreen implements Screen {
 		Image icon = new Image(iconAtlas.createSprite("icons-focus-active"));
 
 		table = new Table();
-		table.add(headerLabel).colspan(2).padTop(50);
+		table.add(headerLabel).colspan(2).padTop(60);
 		table.row();
-		table.add(scoreLabel);
-		table.add(scoreAmountLabel);
+		table.add(scoreLabel).align(Align.right).padRight(5);
+		table.add(scoreAmountLabel).align(Align.left).padLeft(5);
 		table.row();
 		table.add(icon).colspan(2);
 		table.row();
-		table.add(playAgainButton).colspan(2).spaceTop(50);
+		table.add(playAgainButton).colspan(2).spaceTop(60);
 		table.setFillParent(true);
-		table.debug();
+//		table.debug();
 
 		playAgainStage.addActor(table);
 
@@ -88,7 +88,7 @@ public class GameOverScreen implements Screen {
 
 		playAgainStage.act(Gdx.graphics.getDeltaTime());
 		playAgainStage.draw();
-		Table.drawDebug(playAgainStage);
+//		Table.drawDebug(playAgainStage);
 	}
 
 	@Override
