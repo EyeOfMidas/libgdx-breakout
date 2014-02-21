@@ -259,6 +259,7 @@ public class BreakoutScreen implements Screen {
 	@Override
 	public void dispose() {
 		breakoutStage.dispose();
+		world.dispose();
 	}
 
 }

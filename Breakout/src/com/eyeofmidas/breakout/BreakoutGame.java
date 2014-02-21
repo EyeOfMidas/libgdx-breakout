@@ -25,10 +25,11 @@ public class BreakoutGame extends Game {
 		breakoutScreen = new BreakoutScreen(this);
 		gameOverScreen = new GameOverScreen(this);
 		pauseScreen = new PauseScreen(this);
-		setScreen(gameOverScreen);
+		setScreen(mainMenuScreen);
 	}
 
 	public void startGame() {
+		breakoutScreen.reset();
 		setScreen(breakoutScreen);
 	}
 
