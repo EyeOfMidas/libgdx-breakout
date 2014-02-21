@@ -7,13 +7,16 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
 import com.eyeofmidas.breakout.stages.PanelStage;
@@ -40,20 +43,27 @@ public class GameOverScreen implements Screen {
 		playAgainButton = new DrawnTextButton("PLAY AGAIN?");
 		playAgainButton.setSize(250, 60);
 
-		FileHandle fontFile = Gdx.files.internal("data/fonts/opensans-48-extrabold-gray.fnt");
-		BitmapFont font = new BitmapFont(fontFile, false);
+		BitmapFont headerFont = new BitmapFont(Gdx.files.internal("data/fonts/opensans-48-extrabold-gray.fnt"), false);
+		BitmapFont scoreLabelFont = new BitmapFont(Gdx.files.internal("data/fonts/opensans-24-lightgray.fnt"), false);
+		BitmapFont scoreFont = new BitmapFont(Gdx.files.internal("data/fonts/opensans-60-gray.fnt"), false);
 
-		headerLabel = new Label("CONGRATULATIONS!", new LabelStyle(font, new Color(0.3f, 0.3f, 0.3f, 1)));
-		scoreLabel =  new Label("YOUR\nSCORE", new LabelStyle(font, new Color(1, 1, 1, 1)));
-		scoreAmountLabel = new Label("1,000", new LabelStyle(font, new Color(1, 1, 1, 1)));
+		headerLabel = new Label("CONGRATULATIONS!", new LabelStyle(headerFont, new Color(0.3f, 0.3f, 0.3f, 1)));
+		scoreLabel =  new Label("YOUR\nSCORE", new LabelStyle(scoreLabelFont, new Color(0.7f, 0.7f, 0.7f, 1)));
+		scoreLabel.setAlignment(Align.right | Align.bottom);
+		scoreAmountLabel = new Label("1,000", new LabelStyle(scoreFont, new Color(0.3f, 0.3f, 0.3f, 1)));
+		
+		TextureAtlas iconAtlas = new TextureAtlas(Gdx.files.internal("data/category-icons.atlas"));
+		Image icon = new Image(iconAtlas.createSprite("icons-focus-active"));
 
 		table = new Table();
-		table.add(headerLabel).colspan(2);
+		table.add(headerLabel).colspan(2).padTop(50);
 		table.row();
 		table.add(scoreLabel);
 		table.add(scoreAmountLabel);
 		table.row();
-		table.add(playAgainButton).colspan(2);
+		table.add(icon).colspan(2);
+		table.row();
+		table.add(playAgainButton).colspan(2).spaceTop(50);
 		table.setFillParent(true);
 		table.debug();
 
@@ -96,6 +106,7 @@ public class GameOverScreen implements Screen {
 	@Override
 	public void show() {
 		playAgainStage.addActor(game.header);
+		Gdx.input.setInputProcessor(playAgainStage);
 
 	}
 
