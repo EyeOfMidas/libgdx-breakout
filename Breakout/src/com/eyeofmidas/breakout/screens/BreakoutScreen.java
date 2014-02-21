@@ -26,7 +26,6 @@ import com.eyeofmidas.breakout.collisions.BreakoutContactListener;
 import com.eyeofmidas.breakout.collisions.Collideable;
 import com.eyeofmidas.breakout.collisions.Wall;
 import com.eyeofmidas.breakout.stages.BackgroundStage;
-import com.eyeofmidas.utils.Console;
 
 public class BreakoutScreen implements Screen {
 
