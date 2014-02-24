@@ -1,7 +1,5 @@
 package com.eyeofmidas.breakout.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,11 +19,10 @@ public class DrawnTextButton extends Button {
 	private Label label;
 	private Color highlightColor;
 
-	public DrawnTextButton(String string) {
+	public DrawnTextButton(String string, BitmapFont font) {
 		shapeRenderer = new ShapeRenderer();
 		highlightColor = new Color();
-		FileHandle fontFile = Gdx.files.internal("data/fonts/dosis-30-white.fnt");
-		font = new BitmapFont(fontFile, false);
+		this.font = font;
 		setColor(67 / 255f, 182 / 255f, 207 / 255f, 1f);
 		setHighlightColor(84 / 255f, 199 / 255f, 224 / 255f, 1f);
 		setStyle(new ButtonStyle());

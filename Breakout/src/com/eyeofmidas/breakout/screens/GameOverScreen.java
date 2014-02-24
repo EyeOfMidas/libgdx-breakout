@@ -3,7 +3,6 @@ package com.eyeofmidas.breakout.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -39,17 +38,18 @@ public class GameOverScreen implements Screen {
 
 	public GameOverScreen(final BreakoutGame game) {
 		this.game = game;
-		clickSound = Gdx.audio.newSound(Gdx.files.internal("data/button-click.ogg"));
+
+		clickSound = game.getAssetManager().get("data/button-click.ogg", Sound.class);
 		shapeRenderer = new ShapeRenderer();
 		playAgainStage = new PanelStage();
 
-		playAgainButton = new DrawnTextButton("PLAY AGAIN?");
+		playAgainButton = new DrawnTextButton("PLAY AGAIN?", game.getAssetManager().get("data/fonts/dosis-30-white.fnt", BitmapFont.class));
 		playAgainButton.setSize(250, 60);
 
-		BitmapFont headerFont = new BitmapFont(Gdx.files.internal("data/fonts/opensans-48-extrabold-gray.fnt"), false);
-		BitmapFont scoreLabelFont = new BitmapFont(Gdx.files.internal("data/fonts/opensans-24-lightgray.fnt"), false);
-		BitmapFont scoreFont = new BitmapFont(Gdx.files.internal("data/fonts/opensans-60-gray.fnt"), false);
-		BitmapFont labelFont = new BitmapFont(Gdx.files.internal("data/fonts/opensans-24-gray.fnt"), false);
+		BitmapFont headerFont = game.getAssetManager().get("data/fonts/opensans-48-extrabold-gray.fnt", BitmapFont.class);
+		BitmapFont scoreLabelFont = game.getAssetManager().get("data/fonts/opensans-24-lightgray.fnt", BitmapFont.class);
+		BitmapFont scoreFont = game.getAssetManager().get("data/fonts/opensans-60-gray.fnt", BitmapFont.class);
+		BitmapFont labelFont = game.getAssetManager().get("data/fonts/opensans-24-gray.fnt", BitmapFont.class);
 
 		headerLabel = new Label("CONGRATULATIONS!", new LabelStyle(headerFont, new Color(0.3f, 0.3f, 0.3f, 1)));
 		scoreLabel = new Label("YOUR\nSCORE", new LabelStyle(scoreLabelFont, new Color(0.7f, 0.7f, 0.7f, 1)));
@@ -58,7 +58,7 @@ public class GameOverScreen implements Screen {
 		playingLabel = new Label("Currently playing:", new LabelStyle(labelFont, new Color(0.3f, 0.3f, 0.3f, 1)));
 		gameNameLabel = new Label("Breakout Level 1", new LabelStyle(labelFont, new Color(0.3f, 0.3f, 0.3f, 1)));
 
-		TextureAtlas iconAtlas = new TextureAtlas(Gdx.files.internal("data/category-icons.atlas"));
+		TextureAtlas iconAtlas = game.getAssetManager().get("data/category-icons.atlas", TextureAtlas.class);
 		Image icon = new Image(iconAtlas.createSprite("icons-focus-active"));
 
 		table = new Table();
@@ -97,7 +97,7 @@ public class GameOverScreen implements Screen {
 
 		playAgainStage.act(Gdx.graphics.getDeltaTime());
 		playAgainStage.draw();
-		
+
 		shapeRenderer.setProjectionMatrix(playAgainStage.getCamera().combined);
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(0.9f, 0.9f, 0.9f, 1);

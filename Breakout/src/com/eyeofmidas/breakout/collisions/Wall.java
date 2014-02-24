@@ -1,11 +1,11 @@
 package com.eyeofmidas.breakout.collisions;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.eyeofmidas.breakout.BreakoutGame;
 
 public class Wall implements Collideable {
 	private BodyDef bodyDef;
@@ -14,9 +14,9 @@ public class Wall implements Collideable {
 	private World world;
 	private Sound wallHitSound;
 
-	public Wall(World world) {
+	public Wall(World world, BreakoutGame game) {
 		this.world = world;
-		wallHitSound = Gdx.audio.newSound(Gdx.files.internal("data/step.ogg"));
+		wallHitSound = game.getAssetManager().get("data/step.ogg", Sound.class);
 	}
 
 	public void setPosition(float x, float y) {

@@ -1,6 +1,5 @@
 package com.eyeofmidas.breakout.actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.eyeofmidas.breakout.BreakoutGame;
 import com.eyeofmidas.breakout.collisions.Collideable;
 
 public class BrickActor extends Actor implements Collideable {
@@ -21,9 +21,9 @@ public class BrickActor extends Actor implements Collideable {
 	private boolean isDying = false;
 	private Sound hitSound;
 
-	public BrickActor(World world) {
+	public BrickActor(World world, BreakoutGame game) {
 		shapeRenderer = new ShapeRenderer();
-		hitSound = Gdx.audio.newSound(Gdx.files.internal("data/shake.ogg"));
+		hitSound = game.getAssetManager().get("data/shake.ogg", Sound.class);
 		setColor(Color.WHITE);
 		setSize(50, 20);
 

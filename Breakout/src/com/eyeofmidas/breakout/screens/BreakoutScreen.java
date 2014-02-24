@@ -46,8 +46,8 @@ public class BreakoutScreen implements Screen {
 	public BreakoutScreen(final BreakoutGame game) {
 		this.game = game;
 
-		ballDieSound = Gdx.audio.newSound(Gdx.files.internal("data/incorrect.ogg"));
-		correctSound = Gdx.audio.newSound(Gdx.files.internal("data/correct.ogg"));
+		ballDieSound = game.getAssetManager().get("data/incorrect.ogg", Sound.class);
+		correctSound = game.getAssetManager().get("data/correct.ogg", Sound.class);
 
 		breakoutStage = new BackgroundStage();
 		breakoutStage.addListener(new InputListener() {
@@ -109,7 +109,7 @@ public class BreakoutScreen implements Screen {
 		ball = new BallActor(world);
 		breakoutStage.addActor(ball);
 
-		paddle = new PaddleActor(world);
+		paddle = new PaddleActor(world, game);
 		breakoutStage.addActor(paddle);
 
 		Color[] brickColors = new Color[3];
@@ -118,7 +118,7 @@ public class BreakoutScreen implements Screen {
 		brickColors[2] = new Color(102 / 255f, 213 / 255f, 110 / 255f, 1f);
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 12; x++) {
-				BrickActor brick = new BrickActor(world);
+				BrickActor brick = new BrickActor(world, game);
 				brick.setPosition(4f + (x * 6.5f), 49 - (y * 4));
 				brick.setColor(brickColors[y]);
 				bricks.add(brick);
@@ -126,17 +126,17 @@ public class BreakoutScreen implements Screen {
 			}
 		}
 
-		Wall leftWall = new Wall(world);
+		Wall leftWall = new Wall(world, game);
 		leftWall.setPosition(-1.0f, 25f);
 		leftWall.setSize(1.0f, 31f);
 		leftWall.create();
 
-		Wall rightWall = new Wall(world);
+		Wall rightWall = new Wall(world, game);
 		rightWall.setPosition(81f, 25f);
 		rightWall.setSize(1.0f, 31f);
 		rightWall.create();
 
-		Wall ceiling = new Wall(world);
+		Wall ceiling = new Wall(world, game);
 		ceiling.setPosition(0f, 56f);
 		ceiling.setSize(80f, 1.0f);
 		ceiling.create();
