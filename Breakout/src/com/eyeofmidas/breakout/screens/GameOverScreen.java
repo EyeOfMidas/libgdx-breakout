@@ -33,6 +33,8 @@ public class GameOverScreen implements Screen {
 	private Label headerLabel;
 	private Label scoreLabel;
 	private Label scoreAmountLabel;
+	private Label gameNameLabel;
+	private Label playingLabel;
 
 	public GameOverScreen(final BreakoutGame game) {
 		this.game = game;
@@ -46,26 +48,32 @@ public class GameOverScreen implements Screen {
 		BitmapFont headerFont = new BitmapFont(Gdx.files.internal("data/fonts/opensans-48-extrabold-gray.fnt"), false);
 		BitmapFont scoreLabelFont = new BitmapFont(Gdx.files.internal("data/fonts/opensans-24-lightgray.fnt"), false);
 		BitmapFont scoreFont = new BitmapFont(Gdx.files.internal("data/fonts/opensans-60-gray.fnt"), false);
+		BitmapFont labelFont = new BitmapFont(Gdx.files.internal("data/fonts/opensans-24-gray.fnt"), false);
 
 		headerLabel = new Label("CONGRATULATIONS!", new LabelStyle(headerFont, new Color(0.3f, 0.3f, 0.3f, 1)));
-		scoreLabel =  new Label("YOUR\nSCORE", new LabelStyle(scoreLabelFont, new Color(0.7f, 0.7f, 0.7f, 1)));
+		scoreLabel = new Label("YOUR\nSCORE", new LabelStyle(scoreLabelFont, new Color(0.7f, 0.7f, 0.7f, 1)));
 		scoreLabel.setAlignment(Align.right | Align.bottom);
 		scoreAmountLabel = new Label("1,000", new LabelStyle(scoreFont, new Color(0.3f, 0.3f, 0.3f, 1)));
-		
+		playingLabel = new Label("Currently playing:", new LabelStyle(labelFont, new Color(0.3f, 0.3f, 0.3f, 1)));
+		gameNameLabel = new Label("Breakout Level 1", new LabelStyle(labelFont, new Color(0.3f, 0.3f, 0.3f, 1)));
+
 		TextureAtlas iconAtlas = new TextureAtlas(Gdx.files.internal("data/category-icons.atlas"));
 		Image icon = new Image(iconAtlas.createSprite("icons-focus-active"));
 
 		table = new Table();
-		table.add(headerLabel).colspan(2).padTop(60);
+		table.setFillParent(true);
+		table.add(headerLabel).colspan(2).padTop(50);
 		table.row();
 		table.add(scoreLabel).align(Align.right).padRight(5);
 		table.add(scoreAmountLabel).align(Align.left).padLeft(5);
 		table.row();
+		table.add(playingLabel).colspan(2);
+		table.row();
 		table.add(icon).colspan(2);
 		table.row();
-		table.add(playAgainButton).colspan(2).spaceTop(60);
-		table.setFillParent(true);
-//		table.debug();
+		table.add(gameNameLabel).colspan(2);
+		table.row();
+		table.add(playAgainButton).colspan(2);
 
 		playAgainStage.addActor(table);
 
@@ -88,7 +96,6 @@ public class GameOverScreen implements Screen {
 
 		playAgainStage.act(Gdx.graphics.getDeltaTime());
 		playAgainStage.draw();
-//		Table.drawDebug(playAgainStage);
 	}
 
 	@Override
