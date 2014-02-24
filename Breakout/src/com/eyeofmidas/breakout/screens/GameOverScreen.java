@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -96,6 +97,13 @@ public class GameOverScreen implements Screen {
 
 		playAgainStage.act(Gdx.graphics.getDeltaTime());
 		playAgainStage.draw();
+		
+		shapeRenderer.setProjectionMatrix(playAgainStage.getCamera().combined);
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.setColor(0.9f, 0.9f, 0.9f, 1);
+		shapeRenderer.rect(150, 320, 500, 4);
+		shapeRenderer.rect(150, 400, 500, 4);
+		shapeRenderer.end();
 	}
 
 	@Override
