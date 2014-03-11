@@ -4,8 +4,8 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 
 public class BreakoutTexturePacker {
 	public static void main(String[] args) throws Exception {
-		TexturePacker.process("../Breakout-android/assets/data/icons",
-				"../Breakout-android/assets/data",
+		TexturePacker.process("assets/data/icons/",
+				"assets/data/",
 				"category-icons");
 	}
 }
