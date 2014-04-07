@@ -74,6 +74,7 @@ public class LoadingScreen implements Screen {
 		game.getAssetManager().load("category-icons.atlas", TextureAtlas.class);
 		game.getAssetManager().load("fonts/opensans-48-extrabold-gray.fnt", BitmapFont.class);
 		game.getAssetManager().load("fonts/opensans-24-lightgray.fnt", BitmapFont.class);
+		game.getAssetManager().load("fonts/proxima-30-extrabold-white.fnt", BitmapFont.class);
 		game.getAssetManager().load("fonts/opensans-60-gray.fnt", BitmapFont.class);
 		game.getAssetManager().load("fonts/opensans-24-gray.fnt", BitmapFont.class);
 		game.getAssetManager().load("fonts/dosis-30-white.fnt", BitmapFont.class);

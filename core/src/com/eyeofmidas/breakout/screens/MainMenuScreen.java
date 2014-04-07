@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,6 +20,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
 import com.eyeofmidas.breakout.stages.BackgroundStage;
 import com.eyeofmidas.breakout.ui.DrawnTextButton;
+import com.eyeofmidas.utils.Console;
 
 public class MainMenuScreen implements Screen {
 
@@ -36,13 +36,12 @@ public class MainMenuScreen implements Screen {
 	public MainMenuScreen(final BreakoutGame game) {
 		this.game = game;
 
-		clickSound = Gdx.audio.newSound(Gdx.files.internal("button-click.ogg"));
+		clickSound = game.getAssetManager().get("button-click.ogg", Sound.class);
 
-		TextureAtlas iconAtlas = new TextureAtlas(Gdx.files.internal("category-icons.atlas"));
+		TextureAtlas iconAtlas = game.getAssetManager().get("category-icons.atlas", TextureAtlas.class);
 		Image icon = new Image(iconAtlas.createSprite("icons-focus-active"));
 
-		FileHandle fontFile = Gdx.files.internal("fonts/proxima-30-extrabold-white.fnt");
-		BitmapFont font = new BitmapFont(fontFile, false);
+		BitmapFont font = game.getAssetManager().get("fonts/proxima-30-extrabold-white.fnt", BitmapFont.class);
 
 		gameLabel = new Label("Breakout Level 1", new LabelStyle(font, new Color(1, 1, 1, 1)));
 
@@ -84,6 +83,7 @@ public class MainMenuScreen implements Screen {
 
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				clickSound.play();
+				Console.log("playing click sound");
 			}
 		});
 
