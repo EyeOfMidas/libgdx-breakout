@@ -109,7 +109,7 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		mainMenuStage.getViewport().update(800, 600, true);
+		mainMenuStage.getViewport().update(width, height, true);
 	}
 
 	@Override

@@ -22,8 +22,10 @@ public class PaddleActor extends Actor implements Collideable {
 	private Fixture fixture;
 	private float lastVelocity;
 	private Sound hitSound;
+	private Vector2 worldToScreen;
 
-	public PaddleActor(World world, BreakoutGame game) {
+	public PaddleActor(World world, BreakoutGame game, Vector2 scale) {
+		worldToScreen = scale;
 		shapeRenderer = new ShapeRenderer();
 		hitSound = game.getAssetManager().get("click.ogg", Sound.class);
 		setColor(Color.WHITE);
@@ -60,7 +62,7 @@ public class PaddleActor extends Actor implements Collideable {
 
 	@Override
 	public void setX(float x) {
-		fixture.getBody().setTransform(x / 10, getY(), 0);
+		fixture.getBody().setTransform(x / worldToScreen.x, getY(), 0);
 	}
 
 	public void act(float delta) {
@@ -73,13 +75,23 @@ public class PaddleActor extends Actor implements Collideable {
 
 		shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
 		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-		shapeRenderer.translate(getX() * 10 - getWidth() / 2, getY() * 10 - getHeight() / 2, 0);
+		shapeRenderer.translate(getX() * worldToScreen.x - getWidth() / 2, getY() * worldToScreen.y - getHeight() / 2, 0);
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.WHITE);
 		shapeRenderer.rect(0, 0, getWidth(), getHeight());
 		shapeRenderer.end();
 
 		batch.begin();
+	}
+	
+	@Override
+	public float getWidth() {
+		return super.getWidth() * worldToScreen.x / 10;
+	}
+	
+	@Override
+	public float getHeight() {
+		return super.getHeight() * worldToScreen.y / 10;
 	}
 
 	public void reset() {

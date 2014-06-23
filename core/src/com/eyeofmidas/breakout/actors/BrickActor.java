@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -20,8 +21,10 @@ public class BrickActor extends Actor implements Collideable {
 	private Fixture fixture;
 	private boolean isDying = false;
 	private Sound hitSound;
+	private Vector2 worldToScreen;
 
-	public BrickActor(World world, BreakoutGame game) {
+	public BrickActor(World world, BreakoutGame game, Vector2 scale) {
+		worldToScreen = scale;
 		shapeRenderer = new ShapeRenderer();
 		hitSound = game.getAssetManager().get("shake.ogg", Sound.class);
 		setColor(Color.WHITE);
@@ -45,13 +48,23 @@ public class BrickActor extends Actor implements Collideable {
 
 		shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
 		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-		shapeRenderer.translate(getX() * 10 - getWidth() / 2, getY() * 10 - getHeight() / 2, 0);
+		shapeRenderer.translate(getX() * worldToScreen.x - getWidth() / 2, getY() * worldToScreen.y - getHeight() / 2, 0);
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(getColor());
 		shapeRenderer.rect(0, 0, getWidth(), getHeight());
 		shapeRenderer.end();
 
 		batch.begin();
+	}
+
+	@Override
+	public float getWidth() {
+		return super.getWidth() * worldToScreen.x / 10;
+	}
+	
+	@Override
+	public float getHeight() {
+		return super.getHeight() * worldToScreen.y / 10;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -19,11 +20,12 @@ public class BallActor extends Actor implements Collideable {
 	private ShapeRenderer shapeRenderer;
 	private Fixture fixture;
 	private boolean isDying = false;
+	private Vector2 worldToScreen;
 
-	public BallActor(World world) {
+	public BallActor(World world, Vector2 scale) {
 		shapeRenderer = new ShapeRenderer();
-		
-		
+		worldToScreen = scale;
+
 		setColor(Color.WHITE);
 		setSize(20, 20);
 
@@ -57,10 +59,10 @@ public class BallActor extends Actor implements Collideable {
 	}
 
 	public void act(float delta) {
-		if(getY() * 10 + getHeight() < 0) {
+		if (getY() * worldToScreen.x + getHeight() < 0) {
 			isDying = true;
 		}
-		
+
 	}
 
 	public void draw(Batch batch, float parentAlpha) {
@@ -69,10 +71,10 @@ public class BallActor extends Actor implements Collideable {
 
 		shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
 		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-		shapeRenderer.translate(getX() * 10, getY() * 10, 0);
+		shapeRenderer.translate(getX() * worldToScreen.x, getY() * worldToScreen.y, 0);
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.WHITE);
-		shapeRenderer.circle(0, 0, getWidth() / 2);
+		shapeRenderer.circle(0, 0, getWidth() * ( worldToScreen.y / 10) / 2);
 		shapeRenderer.end();
 		batch.begin();
 	}
@@ -95,6 +97,6 @@ public class BallActor extends Actor implements Collideable {
 
 	@Override
 	public void playHitSound() {
-		
+
 	}
 }

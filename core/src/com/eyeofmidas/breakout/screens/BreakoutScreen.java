@@ -33,7 +33,7 @@ public class BreakoutScreen implements Screen {
 	private PaddleActor paddle;
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
-	private boolean debug = true;
+	private boolean debug = false;
 	private boolean[] keys = new boolean[4];
 	private BreakoutContactListener contactListener;
 	private ArrayList<BrickActor> bricks = new ArrayList<BrickActor>();
@@ -41,9 +41,12 @@ public class BreakoutScreen implements Screen {
 	private Sound ballDieSound;
 	private int lives;
 	private Sound correctSound;
+	private Vector2 worldToScreen;
 
 	public BreakoutScreen(final BreakoutGame game) {
 		this.game = game;
+
+		worldToScreen = new Vector2();
 
 		ballDieSound = game.getAssetManager().get("incorrect.ogg", Sound.class);
 		correctSound = game.getAssetManager().get("correct.ogg", Sound.class);
@@ -105,10 +108,10 @@ public class BreakoutScreen implements Screen {
 		world.setContactListener(contactListener);
 		debugRenderer = new Box2DDebugRenderer();
 
-		ball = new BallActor(world);
+		ball = new BallActor(world, worldToScreen);
 		breakoutStage.addActor(ball);
 
-		paddle = new PaddleActor(world, game);
+		paddle = new PaddleActor(world, game, worldToScreen);
 		breakoutStage.addActor(paddle);
 
 		Color[] brickColors = new Color[3];
@@ -117,7 +120,7 @@ public class BreakoutScreen implements Screen {
 		brickColors[2] = new Color(102 / 255f, 213 / 255f, 110 / 255f, 1f);
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 12; x++) {
-				BrickActor brick = new BrickActor(world, game);
+				BrickActor brick = new BrickActor(world, game, worldToScreen);
 				brick.setPosition(4f + (x * 6.5f), 49 - (y * 4));
 				brick.setColor(brickColors[y]);
 				bricks.add(brick);
@@ -158,10 +161,9 @@ public class BreakoutScreen implements Screen {
 		breakoutStage.draw();
 
 		if (debug) {
-			debugRenderer.render(world, breakoutStage.getCamera().combined.scl(10f, 10f, 1f));
+			debugRenderer.render(world, breakoutStage.getCamera().combined.scl(worldToScreen.x, worldToScreen.y, 1f));
 		}
-		//world.step(1 / 45f, 6, 2);
-		world.step(Gdx.graphics.getDeltaTime(), 6, 2);
+		world.step(1 / 45f, 6, 2);
 
 		if (ball.isDying()) {
 			ballDieSound.play();
@@ -222,6 +224,8 @@ public class BreakoutScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		breakoutStage.getViewport().update(width, height, true);
+		worldToScreen.x = 10f * (Gdx.graphics.getWidth() / 800f);
+		worldToScreen.y = 10f * (Gdx.graphics.getHeight() / 600f);
 	}
 
 	@Override
