@@ -44,9 +44,9 @@ public class MainMenuScreen implements Screen {
 		gameLabel = new Label("Breakout Level 1", new LabelStyle(font, new Color(1, 1, 1, 1)));
 
 		playButton = new DrawnTextButton("START GAME", game.getAssetManager().get("fonts/dosis-30-white.fnt", BitmapFont.class));
-		playButton.setSize(250, 60);
+		playButton.setSize(250 * BreakoutGame.scale.x, 60 * BreakoutGame.scale.y);
 		howToPlayButton = new DrawnTextButton("HOW TO PLAY", game.getAssetManager().get("fonts/dosis-30-white.fnt", BitmapFont.class));
-		howToPlayButton.setSize(250, 60);
+		howToPlayButton.setSize(250 * BreakoutGame.scale.x, 60 * BreakoutGame.scale.y);
 
 		mainMenuStage = new Stage();
 		table = new Table();

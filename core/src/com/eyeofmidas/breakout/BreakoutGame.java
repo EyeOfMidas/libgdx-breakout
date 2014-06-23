@@ -3,6 +3,7 @@ package com.eyeofmidas.breakout;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.math.Vector2;
 import com.eyeofmidas.breakout.screens.BreakoutScreen;
 import com.eyeofmidas.breakout.screens.GameOverScreen;
 import com.eyeofmidas.breakout.screens.LoadingScreen;
@@ -12,6 +13,10 @@ import com.eyeofmidas.breakout.ui.Header;
 
 public class BreakoutGame extends Game {
 
+	public static float WIDTH = 800;
+	public static float HEIGHT = 600;
+	public static Vector2 scale = new Vector2();
+	
 	private MainMenuScreen mainMenuScreen;
 	private BreakoutScreen breakoutScreen;
 	public Header header;
@@ -22,19 +27,22 @@ public class BreakoutGame extends Game {
 
 	@Override
 	public void create() {
+		scale.x = Gdx.graphics.getWidth() / BreakoutGame.WIDTH;
+		scale.y = Gdx.graphics.getHeight() / BreakoutGame.HEIGHT;
+		
 		manager = new AssetManager();
 		loadingScreen = new LoadingScreen(this);
 		setScreen(loadingScreen);
 	}
 
 	public void finishedLoading() {
-		header = new Header(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		header = new Header(BreakoutGame.WIDTH * BreakoutGame.scale.x, BreakoutGame.HEIGHT * BreakoutGame.scale.y);
 		mainMenuScreen = new MainMenuScreen(this);
 		breakoutScreen = new BreakoutScreen(this);
 		gameOverScreen = new GameOverScreen(this);
 		pauseScreen = new PauseScreen(this);
-		//setScreen(mainMenuScreen);
-		setScreen(breakoutScreen);
+		setScreen(mainMenuScreen);
+		// setScreen(breakoutScreen);
 		// setScreen(gameOverScreen);
 	}
 

@@ -86,12 +86,12 @@ public class PaddleActor extends Actor implements Collideable {
 	
 	@Override
 	public float getWidth() {
-		return super.getWidth() * worldToScreen.x / 10;
+		return super.getWidth() * BreakoutGame.scale.x;
 	}
 	
 	@Override
 	public float getHeight() {
-		return super.getHeight() * worldToScreen.y / 10;
+		return super.getHeight() * BreakoutGame.scale.y;
 	}
 
 	public void reset() {

@@ -224,8 +224,8 @@ public class BreakoutScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		breakoutStage.getViewport().update(width, height, true);
-		worldToScreen.x = 10f * (Gdx.graphics.getWidth() / 800f);
-		worldToScreen.y = 10f * (Gdx.graphics.getHeight() / 600f);
+		worldToScreen.x = 10f * BreakoutGame.scale.x;
+		worldToScreen.y = 10f * BreakoutGame.scale.y;
 	}
 
 	@Override
