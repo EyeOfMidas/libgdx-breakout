@@ -95,13 +95,6 @@ public class GameOverScreen implements Screen {
 
 		playAgainStage.act(Gdx.graphics.getDeltaTime());
 		playAgainStage.draw();
-
-		shapeRenderer.setProjectionMatrix(playAgainStage.getCamera().combined);
-		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(0.9f, 0.9f, 0.9f, 1);
-		shapeRenderer.rect(150, 320, 500, 4);
-		shapeRenderer.rect(150, 400, 500, 4);
-		shapeRenderer.end();
 	}
 
 	@Override

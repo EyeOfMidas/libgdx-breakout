@@ -16,7 +16,7 @@ public class BreakoutGame extends Game {
 	public static float WIDTH = 800;
 	public static float HEIGHT = 600;
 	public static Vector2 scale = new Vector2();
-	
+
 	private MainMenuScreen mainMenuScreen;
 	private BreakoutScreen breakoutScreen;
 	public Header header;
@@ -29,7 +29,7 @@ public class BreakoutGame extends Game {
 	public void create() {
 		scale.x = Gdx.graphics.getWidth() / BreakoutGame.WIDTH;
 		scale.y = Gdx.graphics.getHeight() / BreakoutGame.HEIGHT;
-		
+
 		manager = new AssetManager();
 		loadingScreen = new LoadingScreen(this);
 		setScreen(loadingScreen);
@@ -42,8 +42,6 @@ public class BreakoutGame extends Game {
 		gameOverScreen = new GameOverScreen(this);
 		pauseScreen = new PauseScreen(this);
 		setScreen(mainMenuScreen);
-		// setScreen(breakoutScreen);
-		// setScreen(gameOverScreen);
 	}
 
 	@Override
