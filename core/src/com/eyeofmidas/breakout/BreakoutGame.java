@@ -1,6 +1,7 @@
 package com.eyeofmidas.breakout;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.eyeofmidas.breakout.screens.BreakoutScreen;
 import com.eyeofmidas.breakout.screens.GameOverScreen;
@@ -11,8 +12,6 @@ import com.eyeofmidas.breakout.ui.Header;
 
 public class BreakoutGame extends Game {
 
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 600;
 	private MainMenuScreen mainMenuScreen;
 	private BreakoutScreen breakoutScreen;
 	public Header header;
@@ -29,7 +28,7 @@ public class BreakoutGame extends Game {
 	}
 
 	public void finishedLoading() {
-		header = new Header();
+		header = new Header(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		mainMenuScreen = new MainMenuScreen(this);
 		breakoutScreen = new BreakoutScreen(this);
 		gameOverScreen = new GameOverScreen(this);

@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class Header extends Actor {
 	private ShapeRenderer shapeRenderer;
 
-	public Header() {
-		this.setPosition(0, 550);
-		this.setSize(800, 50);
+	public Header(float width, float height) {
+		this.setPosition(0, height - 50);
+		this.setSize(width, 50);
 		this.setColor(new Color(67 / 255f, 182 / 255f, 207 / 255f, 1f));
 
 		shapeRenderer = new ShapeRenderer();

@@ -40,6 +40,8 @@ local.properties
 .loadpath
 .externalToolBuilders/
 *.launch
+.project
+.classpath
 
 ## NetBeans
 nbproject/private/

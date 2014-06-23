@@ -5,26 +5,24 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.badlogic.gdx.utils.Scaling;
 import com.eyeofmidas.breakout.BreakoutGame;
-import com.eyeofmidas.breakout.stages.BackgroundStage;
 import com.eyeofmidas.breakout.ui.DrawnTextButton;
 import com.eyeofmidas.utils.Console;
 
 public class MainMenuScreen implements Screen {
 
-	private BackgroundStage mainMenuStage;
+	private Stage mainMenuStage;
 
 	private Label gameLabel;
 	private DrawnTextButton playButton;
@@ -50,7 +48,7 @@ public class MainMenuScreen implements Screen {
 		howToPlayButton = new DrawnTextButton("HOW TO PLAY", game.getAssetManager().get("fonts/dosis-30-white.fnt", BitmapFont.class));
 		howToPlayButton.setSize(250, 60);
 
-		mainMenuStage = new BackgroundStage();
+		mainMenuStage = new Stage();
 		table = new Table();
 		table.add(gameLabel).colspan(2);
 		table.row();
@@ -83,7 +81,6 @@ public class MainMenuScreen implements Screen {
 
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				clickSound.play();
-				Console.log("playing click sound");
 			}
 		});
 
@@ -103,8 +100,8 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClearColor(0.1137f, 0.16f, 0.145f, 1f);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		mainMenuStage.act(Gdx.graphics.getDeltaTime());
 		mainMenuStage.draw();
 		// Table.drawDebug(mainMenuStage);
@@ -112,13 +109,7 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		Vector2 size = Scaling.fit.apply(BreakoutGame.WIDTH, BreakoutGame.HEIGHT, width, height);
-		int viewportX = (int) (width - size.x) / 2;
-		int viewportY = (int) (height - size.y) / 2;
-		int viewportWidth = (int) size.x;
-		int viewportHeight = (int) size.y;
-		Gdx.gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
-		mainMenuStage.setViewport(BreakoutGame.WIDTH, BreakoutGame.HEIGHT, true, viewportX, viewportY, viewportWidth, viewportHeight);
+		mainMenuStage.getViewport().update(800, 600, true);
 	}
 
 	@Override
